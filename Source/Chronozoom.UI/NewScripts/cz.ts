@@ -8,12 +8,14 @@
 /// <reference path='uiloader.ts'/>
 /// <reference path='controls/formbase.ts'/>
 /// <reference path='typings/jquery/jquery.d.ts'/>
+/// <reference path='../ui/profile-edit.ts'/>
 
 module CZ {
     module HomePageViewModel {
         // Contains mapping: CSS selector -> html file.
         var _uiMap = {
-            "#auth-event-form": "/ui/auth-event-form.html"
+            "#auth-event-form": "/ui/auth-event-form.html",
+            "#profile-form": "/ui/profile-form.html"
         };
 
         $(document).ready(function () {
@@ -30,6 +32,24 @@ module CZ {
             CZ.Common.initialize();
             CZ.UILoader.loadAll(_uiMap).done(function () {
                 // TODO: Get UI components.
+                var forms = arguments;
+                var form = new CZ.UI.FormEditProfile(forms[1], {
+                    activationSource: $("#showButton"),
+                    navButton: ".cz-form-nav",
+                    closeButton: ".cz-form-close-btn > .cz-form-btn",
+                    titleTextblock: ".cz-form-title",
+                    startDate: ".cz-form-time-start",
+                    endDate: ".cz-form-time-end",
+                    saveButton: ".cz-form-save",
+                    deleteButton: ".cz-form-delete",
+                    titleInput: ".cz-form-item-title",
+                    context: ""
+                });
+ 
+                $("#edit_profile_button").click(function () {
+                    form.show();
+                });
+                
             });
 
             var url = CZ.UrlNav.getURL();

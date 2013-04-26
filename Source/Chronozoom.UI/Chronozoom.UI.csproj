@@ -151,6 +151,9 @@
     <Content Include="BehindTheScenes.htm" />
     <Content Include="cz.aspx" />
     <Content Include="cz2.html" />
+    <Content Include="NewScripts\cz.min.js">
+      <DependentUpon>cz.ts</DependentUpon>
+    </Content>
     <Content Include="NewScripts\external\ACS.js" />
     <Content Include="NewScripts\authoring.min.js">
       <DependentUpon>authoring.ts</DependentUpon>
@@ -241,6 +244,14 @@
     <Content Include="samples\custom-form\main.html" />
     <Content Include="samples\cz.datepicker.html" />
     <Content Include="ui\auth-event-form.html" />
+    <Content Include="ui\profile-form.html" />
+    <Content Include="ui\profile-edit.js">
+      <DependentUpon>profile-edit.ts</DependentUpon>
+    </Content>
+    <Content Include="ui\profile-edit.min.js">
+      <DependentUpon>profile-edit.ts</DependentUpon>
+    </Content>
+    <Content Include="ui\profile-edit.ts" />
     <Content Include="Views\Account\_IdentityProvidersWithClientSideCode.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Images\A.png" />

@@ -3,7 +3,8 @@ var CZ;
     var HomePageViewModel;
     (function (HomePageViewModel) {
         var _uiMap = {
-            "#auth-event-form": "/ui/auth-event-form.html"
+            "#auth-event-form": "/ui/auth-event-form.html",
+            "#profile-form": "/ui/profile-form.html"
         };
         $(document).ready(function () {
             window.console = window.console || (function () {
@@ -16,6 +17,22 @@ var CZ;
             $('.bubbleInfo').hide();
             CZ.Common.initialize();
             CZ.UILoader.loadAll(_uiMap).done(function () {
+                var forms = arguments;
+                var form = new CZ.UI.FormEditProfile(forms[1], {
+                    activationSource: $("#showButton"),
+                    navButton: ".cz-form-nav",
+                    closeButton: ".cz-form-close-btn > .cz-form-btn",
+                    titleTextblock: ".cz-form-title",
+                    startDate: ".cz-form-time-start",
+                    endDate: ".cz-form-time-end",
+                    saveButton: ".cz-form-save",
+                    deleteButton: ".cz-form-delete",
+                    titleInput: ".cz-form-item-title",
+                    context: ""
+                });
+                $("#edit_profile_button").click(function () {
+                    form.show();
+                });
             });
             var url = CZ.UrlNav.getURL();
             var rootCollection = url.superCollectionName === undefined;
