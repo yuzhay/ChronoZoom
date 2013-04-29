@@ -358,10 +358,10 @@ module CZ {
         * @param  {Object} display_name .
         * @param  {Object} email .
         */
-        export function putProfile(username, display_name, email) {
+        export function putProfile(username, email) {
             var request = new Service.Request(_serviceUrl);
             request.addToPath("profile");
-
+            alert(username);
             return $.ajax({
                 type: "PUT",
                 cache: false,
@@ -386,6 +386,20 @@ module CZ {
                 url: request.url,
                 data: JSON.stringify({})
             });
+        }
+
+        export function getProfile() {
+            var request = new Service.Request(_serviceUrl);
+            request.addToPath("profile");
+
+            //return $.ajax({
+            //    type: "GET",
+            //    cache: false,
+            //    dataType: "json",
+            //    url: request.url,
+            //    data: JSON.stringify({})
+            //});
+            return JSON.stringify({ username: "Skylark", email: "yuriy@mstlab.org" });
         }
     }
 }

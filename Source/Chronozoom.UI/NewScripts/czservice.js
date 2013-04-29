@@ -276,9 +276,10 @@ var CZ;
             return $.when.apply($, promises);
         }
         Service.putExhibitContent = putExhibitContent;
-        function putProfile(username, display_name, email) {
+        function putProfile(username, email) {
             var request = new Service.Request(_serviceUrl);
             request.addToPath("profile");
+            alert(username);
             return $.ajax({
                 type: "PUT",
                 cache: false,
@@ -302,6 +303,15 @@ var CZ;
             });
         }
         Service.deleteProfile = deleteProfile;
+        function getProfile() {
+            var request = new Service.Request(_serviceUrl);
+            request.addToPath("profile");
+            return JSON.stringify({
+                username: "Skylark",
+                email: "yuriy@mstlab.org"
+            });
+        }
+        Service.getProfile = getProfile;
     })(CZ.Service || (CZ.Service = {}));
     var Service = CZ.Service;
 })(CZ || (CZ = {}));

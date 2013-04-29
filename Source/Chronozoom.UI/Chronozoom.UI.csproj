@@ -244,6 +244,22 @@
     <Content Include="samples\custom-form\main.html" />
     <Content Include="samples\cz.datepicker.html" />
     <Content Include="ui\auth-event-form.html" />
+    <Content Include="ui\login-form.html" />
+    <Content Include="ui\login-form.js">
+      <DependentUpon>login-form.ts</DependentUpon>
+    </Content>
+    <Content Include="ui\login-form.min.js">
+      <DependentUpon>login-form.ts</DependentUpon>
+    </Content>
+    <Content Include="ui\login-form.ts" />
+    <Content Include="ui\logout-form.html" />
+    <Content Include="ui\logout-form.js">
+      <DependentUpon>logout-form.ts</DependentUpon>
+    </Content>
+    <Content Include="ui\logout-form.min.js">
+      <DependentUpon>logout-form.ts</DependentUpon>
+    </Content>
+    <Content Include="ui\logout-form.ts" />
     <Content Include="ui\profile-form.html" />
     <Content Include="ui\profile-edit.js">
       <DependentUpon>profile-edit.ts</DependentUpon>

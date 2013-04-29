@@ -513,7 +513,7 @@ module CZ {
                     buttons: {
                         "save and close": function ()
                         {
-                            CZ.Service.putProfile(username,display_name,email);
+                            CZ.Service.putProfile(username,email);
                         }
                     },
                     close: function () {CZ.Authoring.isActive = false;}

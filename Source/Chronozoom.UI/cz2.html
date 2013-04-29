@@ -68,6 +68,8 @@
     <script type="text/javascript" src="/NewScripts/cz.js"></script>
 
     <script type="text/javascript" src="/ui/profile-edit.js"></script>
+    <script type="text/javascript" src="/ui/login-form.js"></script>
+    <script type="text/javascript" src="/ui/logout-form.js"></script>
     <title>ChronoZoom</title>
 </head>
 <body>
@@ -96,19 +98,27 @@
         </div>
         <div class="fright">
             <ul>
-                <!-- CZ.Authoring.UI.editProfile(); -->
+
                 <li class="fleft">
-                    <div id="login-panel">
-                        <a onclick="CZ.Authoring.UI.login();return false;" id="loginButton" style="margin-right: 10px; cursor: pointer; color: #E9E9E9; display: none;">login</a>
-                        <a onclick="" id="edit_profile_button" style="color: #E9E9E9;">edit</a>
-                        <a href="/account/logout" style="color: #E9E9E9; display: none;" id="logoutButton">logout</a>
-                    </div>
+                    <img title="Take a guided tour" alt="Take a guided tour" id="tours_index" src="/Images/tours.png" />
                 </li>
                 <li class="fleft">
-                    <img id="search_button" title="Search ChronoZoom" alt="Search ChronoZoom" src="/Images/search_off.jpg" />
+                    <img id="search_button" title="Search ChronoZoom" alt="Search ChronoZoom" src="/Images/search.png" />
                 </li>
                 <li class="fleft">
-                    <img title="Take a guided tour" id="tours_index" alt="Take a guided tour" src="/Images/tour_off.jpg" />
+                    <img title=""  alt="" src="/Images/eye.png" />
+                </li>
+                <li class="fleft">
+                    <img title="" alt="" src="/Images/pen.png" />
+                </li>
+                <li class="fleft" >
+                    <img src="/Images/profile.png" id="login_button"/>
+                </li>
+                <li class="fleft" >
+                    <img src="/Images/profile.png" id="edit_profile_button"/>
+                </li>
+                <li class="fleft" >
+                    <img src="/Images/profile.png" id="logout_button"/>
                 </li>
             </ul>
         </div>
@@ -216,30 +226,7 @@
             </div>
 
             <div id="loginForm" style="background-color: rgb(60, 95, 150); display: none; color: white;">
-                <div id="Main">
-                    <div id="SignInContent" class="SignInContent">
-                        <div id="LeftArea" class="LeftArea" style="display: none;">
-                            <div class="Header">Sign in using your account on:</div>
-                            <div id="IdentityProvidersList"></div>
-                            <br />
-                            <div id="MoreOptions" style="display: none;"><a href="" onclick="ShowDefaultSigninPage(); return false;">Show more options</a></div>
-                        </div>
-                        <div id="Divider" class="Divider" style="display: none;">
-                            <div class="DividerLine"></div>
-                            <div>Or</div>
-                            <div class="DividerLine"></div>
-                        </div>
-                        <div id="RightArea" class="RightArea" style="display: none;">
-                            <div class="Header">Sign in using your e-mail address:</div>
-                            <form onsubmit="EmailAddressEntered(); return false;">
-                                <input type="text" id="EmailAddressTextBox" />
-                                <input type="submit" id="EmailAddressSubmitButton" value="Submit" /><br />
-                                <br />
-                                <label id="EmailAddressError"></label>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
         <div id="tour_control" class="tour_control" style="display: none; top: 14px; position: relative; margin: auto">
@@ -329,6 +316,12 @@
         </div>
 
         <div id="profile-form" class="cz-form unselectable">
+        </div>
+
+        <div id="login-form" class="cz-form unselectable">
+        </div>
+
+        <div id="logout-form" class="cz-form unselectable">
         </div>
     </div>
 

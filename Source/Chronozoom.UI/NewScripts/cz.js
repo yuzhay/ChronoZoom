@@ -4,7 +4,9 @@ var CZ;
     (function (HomePageViewModel) {
         var _uiMap = {
             "#auth-event-form": "/ui/auth-event-form.html",
-            "#profile-form": "/ui/profile-form.html"
+            "#profile-form": "/ui/profile-form.html",
+            "#login-form": "/ui/login-form.html",
+            "#logout-form": "/ui/logout-form.html"
         };
         $(document).ready(function () {
             window.console = window.console || (function () {
@@ -26,18 +28,52 @@ var CZ;
                     startDate: ".cz-form-time-start",
                     endDate: ".cz-form-time-end",
                     saveButton: ".cz-form-save",
-                    deleteButton: ".cz-form-delete",
                     titleInput: ".cz-form-item-title",
+                    usernameInput: ".cz-form-username",
+                    emailInput: ".cz-form-email",
+                    agreeInput: ".cz-form-agree",
                     context: ""
                 });
                 $("#edit_profile_button").click(function () {
                     form.show();
+                });
+                var form_login = new CZ.UI.FormLogin(forms[2], {
+                    activationSource: $("#showButton"),
+                    navButton: ".cz-form-nav",
+                    closeButton: ".cz-form-close-btn > .cz-form-btn",
+                    titleTextblock: ".cz-form-title",
+                    titleInput: ".cz-form-item-title",
+                    context: ""
+                });
+                $("#login_button").click(function () {
+                    form_login.show();
+                });
+                var form_logout = new CZ.UI.FormLogoutProfile(forms[3], {
+                    activationSource: $("#showButton"),
+                    navButton: ".cz-form-nav",
+                    closeButton: ".cz-form-close-btn > .cz-form-btn",
+                    titleTextblock: ".cz-form-title",
+                    titleInput: ".cz-form-item-title",
+                    context: ""
+                });
+                $("#logout_button").click(function () {
+                    form_logout.show();
                 });
             });
             var url = CZ.UrlNav.getURL();
             var rootCollection = url.superCollectionName === undefined;
             CZ.Service.superCollectionName = url.superCollectionName;
             CZ.Service.collectionName = url.collectionName;
+            $('.fright ul li').click(function (event) {
+                $(".fright ul li").each(function () {
+                    $(this).css("background-color", "");
+                });
+                if($(event.target).parent().css("background-color") != "#0464A2") {
+                    $(event.target).parent().css("background-color", "#0464A2");
+                } else {
+                    $(event.target).parent().css("background-color", "");
+                }
+            });
             $('#search_button').mouseup(CZ.Search.onSearchClicked).mouseover(function () {
                 CZ.Search.searchHighlight(true);
             }).mouseout(function () {
@@ -111,10 +147,10 @@ var CZ;
                 url: "/account/isauth"
             }).done(function (data) {
                 if(data != "True") {
-                    $("#loginButton").show();
+                    $("#login_button").show();
                 } else {
-                    $("#logoutButton").show();
-                    $("#editButton").show();
+                    $("#logout_button").show();
+                    $("#edit_profile_button").show();
                 }
             });
             var wlcmScrnCookie = CZ.Common.getCookie("welcomeScreenDisallowed");

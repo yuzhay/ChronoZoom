@@ -9,16 +9,23 @@
 /// <reference path='controls/formbase.ts'/>
 /// <reference path='typings/jquery/jquery.d.ts'/>
 /// <reference path='../ui/profile-edit.ts'/>
+/// <reference path='../ui/login-form.ts'/>
+/// <reference path='../ui/logout-form.ts'/>
 
 module CZ {
     module HomePageViewModel {
         // Contains mapping: CSS selector -> html file.
         var _uiMap = {
             "#auth-event-form": "/ui/auth-event-form.html",
-            "#profile-form": "/ui/profile-form.html"
+            "#profile-form": "/ui/profile-form.html",
+            "#login-form": "/ui/login-form.html",
+            "#logout-form": "/ui/logout-form.html"
         };
 
         $(document).ready(function () {
+
+           
+
             //Ensures there will be no 'console is undefined' errors
             window.console = window.console || <any>(function () {
                 var c = <any>{};
@@ -39,15 +46,44 @@ module CZ {
                     closeButton: ".cz-form-close-btn > .cz-form-btn",
                     titleTextblock: ".cz-form-title",
                     startDate: ".cz-form-time-start",
-                    endDate: ".cz-form-time-end",
+                    endDate: ".cz-form-time-end", 
                     saveButton: ".cz-form-save",
-                    deleteButton: ".cz-form-delete",
                     titleInput: ".cz-form-item-title",
+                    usernameInput: ".cz-form-username",
+                    emailInput: ".cz-form-email",
+                    agreeInput: ".cz-form-agree",
                     context: ""
                 });
  
                 $("#edit_profile_button").click(function () {
                     form.show();
+                });
+
+                var form_login = new CZ.UI.FormLogin(forms[2], {
+                    activationSource: $("#showButton"),
+                    navButton: ".cz-form-nav",
+                    closeButton: ".cz-form-close-btn > .cz-form-btn",
+                    titleTextblock: ".cz-form-title",
+                    titleInput: ".cz-form-item-title",
+                    context: ""
+                });
+
+                $("#login_button").click(function () {
+                    form_login.show();
+                });
+
+                var form_logout = new CZ.UI.FormLogoutProfile(forms[3], {
+                    activationSource: $("#showButton"),
+                    navButton: ".cz-form-nav",
+                    closeButton: ".cz-form-close-btn > .cz-form-btn",
+                    titleTextblock: ".cz-form-title",
+                    titleInput: ".cz-form-item-title",
+                    context: ""
+                });
+
+                $("#logout_button").click(function () {
+
+                    form_logout.show();
                 });
                 
             });
@@ -56,6 +92,21 @@ module CZ {
             var rootCollection = url.superCollectionName === undefined;
             CZ.Service.superCollectionName = url.superCollectionName;
             CZ.Service.collectionName = url.collectionName;
+
+            $('.fright ul li').click((event) =>
+            {
+                $(".fright ul li").each(function () {
+                    $(this).css("background-color", "");
+                });
+
+                if ($(event.target).parent().css("background-color") != "#0464A2")
+                {
+                    $(event.target).parent().css("background-color", "#0464A2")
+                } else
+                {
+                    $(event.target).parent().css("background-color", "");
+                }
+            });
 
             $('#search_button')
                 .mouseup(CZ.Search.onSearchClicked)
@@ -126,10 +177,10 @@ module CZ {
                 url: "/account/isauth"
             }).done(function (data) {
                 if (data != "True") {
-                    $("#loginButton").show();
+                    $("#login_button").show();
                 } else {
-                    $("#logoutButton").show();
-                    $("#editButton").show();
+                    $("#logout_button").show();
+                    $("#edit_profile_button").show();
                 }
             });
 

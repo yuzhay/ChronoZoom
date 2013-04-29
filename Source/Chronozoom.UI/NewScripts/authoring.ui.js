@@ -417,7 +417,7 @@ var CZ;
                     width: 600,
                     buttons: {
                         "save and close": function () {
-                            CZ.Service.putProfile(username, display_name, email);
+                            CZ.Service.putProfile(username, email);
                         }
                     },
                     close: function () {
