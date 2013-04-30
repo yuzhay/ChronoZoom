@@ -221,6 +221,9 @@
       <DependentUpon>uiloader.ts</DependentUpon>
     </Content>
     <Content Include="NewScripts\uiloader.ts" />
+    <Content Include="NewScripts\urlnav.min.js">
+      <DependentUpon>urlnav.ts</DependentUpon>
+    </Content>
     <Content Include="NewScripts\urlnav.ts" />
     <Content Include="NewScripts\vccontent.ts" />
     <Content Include="NewScripts\viewport.ts" />
@@ -589,6 +592,12 @@
     <Content Include="NewScripts\authoring.ui.min.js.map">
       <DependentUpon>authoring.ui.js</DependentUpon>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\cz-nodelete-chronozoom-test - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\cz-nodelete-chronozoom-test - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\czazurepb - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\czazurepb - Web Deploy.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

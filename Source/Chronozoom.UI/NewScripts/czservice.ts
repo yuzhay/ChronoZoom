@@ -89,21 +89,6 @@ module CZ {
         * Chronozoom.svc Requests.
         */
 
-        // .../get?supercollection=&collection=
-        export function get () {
-            var request = new Service.Request(_serviceUrl);
-            request.addToPath("get");
-            request.addParameter("supercollection", CZ.Service.superCollectionName);
-            request.addParameter("collection", CZ.Service.collectionName);
-
-            return $.ajax({
-                type: "GET",
-                cache: false,
-                dataType: "json",
-                url: request.url
-            });
-        }
-
         // .../gettimelines?supercollection=&collection=&start=&end=&minspan=&lca=
         export function getTimelines (r) {
             var request = new Request(_serviceUrl);
@@ -322,6 +307,21 @@ module CZ {
             });
         }
 
+        // .../{supercollection}/{collection}/tours
+        export function getTours () {
+            var request = new Service.Request(_serviceUrl);
+            request.addToPath(superCollectionName);
+            request.addToPath(collectionName);
+            request.addToPath("tours");
+
+            return $.ajax({
+                type: "GET",
+                cache: false,
+                dataType: "json",
+                url: request.url
+            });
+        }
+
         /**
         * Auxiliary Methods.
         */
@@ -392,14 +392,8 @@ module CZ {
             var request = new Service.Request(_serviceUrl);
             request.addToPath("profile");
 
-            //return $.ajax({
-            //    type: "GET",
-            //    cache: false,
-            //    dataType: "json",
-            //    url: request.url,
-            //    data: JSON.stringify({})
-            //});
-            return JSON.stringify({ username: "Skylark", email: "yuriy@mstlab.org" });
+            return $.ajax({ url: "/chronozoom.svc/user"}).done(function (data) {  return data; });
+            //return JSON.stringify({ username: "Skylark", email: "yuriy@mstlab.org" });
         }
     }
 }

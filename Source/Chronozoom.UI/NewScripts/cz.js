@@ -5,9 +5,53 @@ var CZ;
         var _uiMap = {
             "#auth-event-form": "/ui/auth-event-form.html",
             "#profile-form": "/ui/profile-form.html",
-            "#login-form": "/ui/login-form.html",
-            "#logout-form": "/ui/logout-form.html"
+            "#login-form": "/ui/login-form.html"
         };
+        var FeatureActivation;
+        (function (FeatureActivation) {
+            FeatureActivation._map = [];
+            FeatureActivation._map[0] = "Enabled";
+            FeatureActivation.Enabled = 0;
+            FeatureActivation._map[1] = "Disabled";
+            FeatureActivation.Disabled = 1;
+            FeatureActivation._map[2] = "RootCollection";
+            FeatureActivation.RootCollection = 2;
+            FeatureActivation._map[3] = "NotRootCollection";
+            FeatureActivation.NotRootCollection = 3;
+        })(FeatureActivation || (FeatureActivation = {}));
+        var _featureMap = [
+            {
+                Name: "Login",
+                Activation: FeatureActivation.NotRootCollection,
+                JQueryReference: "#login-panel"
+            }, 
+            {
+                Name: "Search",
+                Activation: FeatureActivation.Enabled,
+                JQueryReference: "#search-button"
+            }, 
+            {
+                Name: "Tours",
+                Activation: FeatureActivation.Enabled,
+                JQueryReference: "#tours-index"
+            }, 
+            {
+                Name: "Authoring",
+                Activation: FeatureActivation.NotRootCollection,
+                JQueryReference: ".footer-authoring-link"
+            }, 
+            {
+                Name: "WelcomeScreen",
+                Activation: FeatureActivation.RootCollection,
+                JQueryReference: "#welcomeScreenBack"
+            }, 
+            {
+                Name: "Regimes",
+                Activation: FeatureActivation.RootCollection,
+                JQueryReference: ".regime-link"
+            }, 
+            
+        ];
         $(document).ready(function () {
             window.console = window.console || (function () {
                 var c = {
@@ -25,9 +69,7 @@ var CZ;
                     navButton: ".cz-form-nav",
                     closeButton: ".cz-form-close-btn > .cz-form-btn",
                     titleTextblock: ".cz-form-title",
-                    startDate: ".cz-form-time-start",
-                    endDate: ".cz-form-time-end",
-                    saveButton: ".cz-form-save",
+                    saveButton: "#cz-form-save",
                     titleInput: ".cz-form-item-title",
                     usernameInput: ".cz-form-username",
                     emailInput: ".cz-form-email",
@@ -47,17 +89,6 @@ var CZ;
                 });
                 $("#login_button").click(function () {
                     form_login.show();
-                });
-                var form_logout = new CZ.UI.FormLogoutProfile(forms[3], {
-                    activationSource: $("#showButton"),
-                    navButton: ".cz-form-nav",
-                    closeButton: ".cz-form-close-btn > .cz-form-btn",
-                    titleTextblock: ".cz-form-title",
-                    titleInput: ".cz-form-item-title",
-                    context: ""
-                });
-                $("#logout_button").click(function () {
-                    form_logout.show();
                 });
             });
             var url = CZ.UrlNav.getURL();
@@ -144,13 +175,13 @@ var CZ;
                 CZ.Common.toggleOnImage('biblCloseButton', 'png');
             });
             $.ajax({
-                url: "/account/isauth"
+                url: "/chronozoom.svc/user"
             }).done(function (data) {
-                if(data != "True") {
-                    $("#login_button").show();
+                if(data == "") {
+                    $("#login-panel").show();
                 } else {
-                    $("#logout_button").show();
-                    $("#edit_profile_button").show();
+                    $("#profile-panel").show();
+                    $("#profile-panel span.auth-panel-login").html(data.DisplayName);
                 }
             });
             var wlcmScrnCookie = CZ.Common.getCookie("welcomeScreenDisallowed");
@@ -164,12 +195,21 @@ var CZ;
                     CZ.Common.closeWelcomeScreen();
                 });
             }
-            if(rootCollection) {
-                $(".footer-authoring-link").css("display", "none");
-            } else {
-                $("#welcomeScreenBack").css("display", "none");
-                $(".regime-link").css("display", "none");
-            }
+            _featureMap.forEach(function (feature) {
+                var enabled = true;
+                if(feature.Activation === FeatureActivation.Disabled) {
+                    enabled = false;
+                }
+                if(feature.Activation === FeatureActivation.NotRootCollection && rootCollection) {
+                    enabled = false;
+                }
+                if(feature.Activation === FeatureActivation.RootCollection && !rootCollection) {
+                    enabled = false;
+                }
+                if(!enabled) {
+                    $(feature.JQueryReference).css("display", "none");
+                }
+            });
             if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
                 if(/Chrome[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
                     var oprversion = new Number(RegExp.$1);

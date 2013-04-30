@@ -10,7 +10,6 @@
 /// <reference path='typings/jquery/jquery.d.ts'/>
 /// <reference path='../ui/profile-edit.ts'/>
 /// <reference path='../ui/login-form.ts'/>
-/// <reference path='../ui/logout-form.ts'/>
 
 module CZ {
     module HomePageViewModel {
@@ -18,9 +17,54 @@ module CZ {
         var _uiMap = {
             "#auth-event-form": "/ui/auth-event-form.html",
             "#profile-form": "/ui/profile-form.html",
-            "#login-form": "/ui/login-form.html",
-            "#logout-form": "/ui/logout-form.html"
+            "#login-form": "/ui/login-form.html"
         };
+
+        enum FeatureActivation {
+            Enabled,
+            Disabled,
+            RootCollection,
+            NotRootCollection,
+            }
+
+        // Basic Flight-Control (Tracks the features that are enabled)
+        //
+        // FEATURES CAN ONLY BE ACTIVATED IN ROOTCOLLECTION AFTER HITTING ZERO ACTIVE BUGS.
+        //
+        // REMOVING THIS COMMENT OR BYPASSING THIS CHECK MAYBE BRING YOU BAD KARMA, ITS TRUE.
+        //
+        var _featureMap = [
+            {
+                Name: "Login",
+                Activation: FeatureActivation.NotRootCollection,
+                JQueryReference: "#login-panel"
+            },
+            {
+                Name: "Search",
+                Activation: FeatureActivation.Enabled,
+                JQueryReference: "#search-button"
+            },
+            {
+                Name: "Tours",
+                Activation: FeatureActivation.Enabled,
+                JQueryReference: "#tours-index"
+            },
+            {
+                Name: "Authoring",
+                Activation: FeatureActivation.NotRootCollection,
+                JQueryReference: ".footer-authoring-link"
+            },
+            {
+                Name: "WelcomeScreen",
+                Activation: FeatureActivation.RootCollection,
+                JQueryReference: "#welcomeScreenBack"
+            },
+            {
+                Name: "Regimes",
+                Activation: FeatureActivation.RootCollection,
+                JQueryReference: ".regime-link"
+            },
+        ];
 
         $(document).ready(function () {
 
@@ -45,9 +89,7 @@ module CZ {
                     navButton: ".cz-form-nav",
                     closeButton: ".cz-form-close-btn > .cz-form-btn",
                     titleTextblock: ".cz-form-title",
-                    startDate: ".cz-form-time-start",
-                    endDate: ".cz-form-time-end", 
-                    saveButton: ".cz-form-save",
+                    saveButton: "#cz-form-save",
                     titleInput: ".cz-form-item-title",
                     usernameInput: ".cz-form-username",
                     emailInput: ".cz-form-email",
@@ -72,19 +114,6 @@ module CZ {
                     form_login.show();
                 });
 
-                var form_logout = new CZ.UI.FormLogoutProfile(forms[3], {
-                    activationSource: $("#showButton"),
-                    navButton: ".cz-form-nav",
-                    closeButton: ".cz-form-close-btn > .cz-form-btn",
-                    titleTextblock: ".cz-form-title",
-                    titleInput: ".cz-form-item-title",
-                    context: ""
-                });
-
-                $("#logout_button").click(function () {
-
-                    form_logout.show();
-                });
                 
             });
 
@@ -172,15 +201,27 @@ module CZ {
                 .mouseout(() => { CZ.Common.toggleOffImage('biblCloseButton', 'png'); })
                 .mouseover(() => { CZ.Common.toggleOnImage('biblCloseButton', 'png'); })
             
+            ////Login/Logout button
+            //$.ajax({
+            //    url: "/account/isauth"
+            //}).done(function (data) {
+            //    if (data != "True") {
+            //        $("#login-panel").show();
+            //    } else {
+            //        //$("#logout_button").show();
+            //        $("#profile-panel").show();
+            //    }
+            //});
+
             //Login/Logout button
             $.ajax({
-                url: "/account/isauth"
+                url: "/chronozoom.svc/user"
             }).done(function (data) {
-                if (data != "True") {
-                    $("#login_button").show();
+                if (data == "") {
+                    $("#login-panel").show();
                 } else {
-                    $("#logout_button").show();
-                    $("#edit_profile_button").show();
+                    $("#profile-panel").show();
+                    $("#profile-panel span.auth-panel-login").html(data.DisplayName);
                 }
             });
 
@@ -199,12 +240,26 @@ module CZ {
                 });
             }
 
-            if (rootCollection) {
-                $(".footer-authoring-link").css("display", "none");
-            } else {
-                $("#welcomeScreenBack").css("display", "none");
-                $(".regime-link").css("display", "none");
-            }
+            // Feature activation control
+            _featureMap.forEach(function (feature) {
+                var enabled : bool = true;
+
+                if (feature.Activation === FeatureActivation.Disabled) {
+                    enabled = false;
+                }
+
+                if (feature.Activation === FeatureActivation.NotRootCollection && rootCollection) {
+                    enabled = false;
+                }
+
+                if (feature.Activation === FeatureActivation.RootCollection && !rootCollection) {
+                    enabled = false;
+                }
+
+                if (!enabled) {
+                    $(feature.JQueryReference).css("display", "none");
+                }
+            });
 
             if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
                 if (/Chrome[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {

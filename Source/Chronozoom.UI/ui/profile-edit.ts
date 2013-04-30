@@ -7,8 +7,6 @@ module CZ {
     export module UI {
 
         export interface FormEditProfileInfo extends CZ.UI.FormBaseInfo {
-            startDate: string;
-            endDate: string;
             saveButton: string;
             usernameInput: string;
             emailInput: string;
@@ -18,8 +16,6 @@ module CZ {
 
         export class FormEditProfile extends CZ.UI.FormBase {
             private saveButton: JQuery;
-            private startDate: CZ.UI.DatePicker;
-            private endDate: CZ.UI.DatePicker;
             private titleInput: JQuery;
 
             private isCancel: bool;
@@ -43,33 +39,27 @@ module CZ {
             }
 
             private validUsername(e) {
-                return true;
+                var filter = /^[a-z0-9\-_]{4,20}$/i;
+                return String(e).search(filter) != -1;
             }
 
             private initialize(): void {
-
-                var profile = JSON.parse(CZ.Service.getProfile());
-
-                this.usernameInput.val(profile.username);
-                this.emailInput.val(profile.email);
-
-                //if (CZ.Authoring.mode === "profile") {
-
-                //}
-                //else {
-                //    console.log("Unexpected authoring mode in timeline form.");
-                //    this.close();
-                //}
-
-                //this.isCancel = true;
-                //this.endDate.addEditMode_Infinite();
-
+                var profile = CZ.Service.getProfile();
+                profile.done(data => {
+                    if (data != null) {
+                        this.usernameInput.val(data.DisplayName);
+                        this.usernameInput.prop('disabled', true);
+                        this.emailInput.val(data.Email);
+                        this.agreeInput.attr('checked', true);
+                        this.agreeInput.prop('disabled', true);
+                    }
+                });
 
 
                 this.saveButton.click(event => {
                     var isValid = this.validUsername(this.usernameInput.val());
                     if (!isValid) {
-                        alert("Provided incorrect username");
+                        alert("Provided incorrect username, \n'a-z', '0-9', '-', '_' - characters allowed only. ");
                         return;
                     }
 

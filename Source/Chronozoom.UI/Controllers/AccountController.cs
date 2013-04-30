@@ -33,9 +33,14 @@ namespace Chronozoom.Api.Controllers
         public bool IsAuth()
         {
             if (Request.IsAuthenticated)
+            {
+
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
 
 

@@ -21,17 +21,25 @@ var CZ;
                 return String(e).search(filter) != -1;
             };
             FormEditProfile.prototype.validUsername = function (e) {
-                return true;
+                var filter = /^[a-z0-9\-_]{4,20}$/i;
+                return String(e).search(filter) != -1;
             };
             FormEditProfile.prototype.initialize = function () {
                 var _this = this;
-                var profile = JSON.parse(CZ.Service.getProfile());
-                this.usernameInput.val(profile.username);
-                this.emailInput.val(profile.email);
+                var profile = CZ.Service.getProfile();
+                profile.done(function (data) {
+                    if(data != null) {
+                        _this.usernameInput.val(data.DisplayName);
+                        _this.usernameInput.prop('disabled', true);
+                        _this.emailInput.val(data.Email);
+                        _this.agreeInput.attr('checked', true);
+                        _this.agreeInput.prop('disabled', true);
+                    }
+                });
                 this.saveButton.click(function (event) {
                     var isValid = _this.validUsername(_this.usernameInput.val());
                     if(!isValid) {
-                        alert("Provided incorrect username");
+                        alert("Provided incorrect username, \n'a-z', '0-9', '-', '_' - characters allowed only. ");
                         return;
                     }
                     var isValid = _this.validEmail(_this.emailInput.val());

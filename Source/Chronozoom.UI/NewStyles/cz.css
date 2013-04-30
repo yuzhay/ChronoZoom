@@ -101,7 +101,7 @@ a:visited {
     height: 100%;
     color: #E9E9E9 !important;
     font-size: medium 14px;
-    line-height: 36px;
+   
 }
 
 /***********************************************************
@@ -185,9 +185,12 @@ a:visited {
 }
 
 .tour_control {
+    display: none;
+    margin: 5px;
     width: 190px;
     cursor: pointer;
 }
+
 
 
 /***********************************************************
@@ -1319,6 +1322,8 @@ img.fallbackBackground {
     background-image: -webkit-linear-gradient(bottom, #0E4073 0%, #1B6AAB 100%);
     /* W3C Markup, IE10 Release Preview */ 
     background-image: linear-gradient(to top, #0E4073 0%, #1B6AAB 100%);
+
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1B6AAB', endColorstr='#0E4073',GradientType=0 ); /* IE6-9 */
 }
 
 .cz-form-timeline {
@@ -1401,6 +1406,20 @@ img.fallbackBackground {
     margin-left: 0px;
 }
 
+
+#profile-form button.cz-form-save {
+    width:134px;
+    color:#fff;
+}
+
+.auth-panel-login{
+    color:#E9E9E9;
+    display:inline-block; 
+    vertical-align:top;
+    margin-top:8px;
+    margin-left:10px;
+}
+
 /* Login Form */
 #login-form{
     right:0px;
@@ -1418,24 +1437,8 @@ img.fallbackBackground {
 	width:304px;
 }
 
-#logout-form {
-    right:0px;
-    width:120px;
-    font-size:14px;
-    background-color: #0464A2;
+#cz-form-logout, #cz-form-save {
+    width:134px;
 }
 
-#logout-form ul{
-    list-style-type: none;
-    color:#E9E9E9;
-    margin-left:0px;
-    padding-left:20px;
-}
 
-#logout-form li{
-    margin-left:0px;
-}
-
-#logout-form ul li:hover{
-    color:white;
-}

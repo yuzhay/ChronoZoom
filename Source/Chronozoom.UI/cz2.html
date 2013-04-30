@@ -19,8 +19,7 @@
 
     <!--TODO: Download custom version of jQuery UI-->
 
-    <link rel="stylesheet" type="text/css" href="/NewStyles/cz.css" />
-    <link rel="stylesheet" type="text/css" href="/NewStyles/cz.datepicker.css" />
+    <link rel="stylesheet" type="text/css" href="/NewStyles/cz.css" />    <link rel="stylesheet" type="text/css" href="/NewStyles/cz.datepicker.css" />
     <link rel="stylesheet" type="text/css" href="/NewStyles/timescale.css" />
 
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
@@ -69,7 +68,6 @@
 
     <script type="text/javascript" src="/ui/profile-edit.js"></script>
     <script type="text/javascript" src="/ui/login-form.js"></script>
-    <script type="text/javascript" src="/ui/logout-form.js"></script>
     <title>ChronoZoom</title>
 </head>
 <body>
@@ -98,7 +96,6 @@
         </div>
         <div class="fright">
             <ul>
-
                 <li class="fleft">
                     <img title="Take a guided tour" alt="Take a guided tour" id="tours_index" src="/Images/tours.png" />
                 </li>
@@ -111,15 +108,20 @@
                 <li class="fleft">
                     <img title="" alt="" src="/Images/pen.png" />
                 </li>
-                <li class="fleft" >
-                    <img src="/Images/profile.png" id="login_button"/>
+                <li class="fleft">
+                    <div style="display:none" id="login-panel">
+                        <span class="auth-panel-login">sign in</span>
+                        <img src="/Images/profile.png" id="login_button"/> 
+                    </div>
+ 
                 </li>
                 <li class="fleft" >
-                    <img src="/Images/profile.png" id="edit_profile_button"/>
+                   <div style="display:none" id="profile-panel">
+                        <span class="auth-panel-login"></span>
+                        <img src="/Images/profile.png" id="edit_profile_button"/> 
+                    </div>
                 </li>
-                <li class="fleft" >
-                    <img src="/Images/profile.png" id="logout_button"/>
-                </li>
+
             </ul>
         </div>
 
@@ -229,7 +231,7 @@
 
             </div>
         </div>
-        <div id="tour_control" class="tour_control" style="display: none; top: 14px; position: relative; margin: auto">
+        <div id="tour_control" class="tour_control fleft">
             <img id="tour_prev" src="/Images/tour_prev_off.jpg" alt="previous" />
             <img style="margin: 0 0 0 16px"
                 id="tour_playpause" src="/Images/tour_pause_off.jpg" alt="play/pause" />
@@ -312,18 +314,14 @@
         </div>
 
         <!--Create Event Form-->
-        <div id="auth-event-form" class="cz-form unselectable">
-        </div>
+        <div id="auth-event-form" class="cz-form unselectable"></div>
 
-        <div id="profile-form" class="cz-form unselectable">
-        </div>
+        <div id="profile-form" class="cz-form unselectable"></div>
 
-        <div id="login-form" class="cz-form unselectable">
-        </div>
+        <div id="login-form" class="cz-form unselectable"></div>
 
-        <div id="logout-form" class="cz-form unselectable">
-        </div>
     </div>
+
 
     <script src="https://cz-nodelete-chronozoom-test.accesscontrol.windows.net/v2/metadata/IdentityProviders.js?protocol=wsfederation&amp;realm=http%3a%2f%2ftest.chronozoomproject.org%2f&amp;reply_to=&amp;context=&amp;request_id=&amp;version=1.0&amp;callback=ShowSigninPage" type="text/javascript"></script>
     <div id="welcomeScreenBack" class="welcomeScreenBack">
@@ -373,16 +371,16 @@
         <div class="fright">
             <ul>
                 <li class="fright">
-                    <div class="footer-link">about</div>
+                    <a class="footer-link" href="http://join.chronozoomproject.org">about</a>
                 </li>
                 <li class="fright">
-                    <div class="footer-link">feedback</div>
+                    <a class="footer-link" href="http://join.chronozoomproject.org/forum/forums/chronozoom-beta-feedback/">feedback</a>
                 </li>
                 <li class="fright">
-                    <div class="footer-link">privacy</div>
+                    <a class="footer-link" href="http://join.chronozoomproject.org/notices">privacy</a>
                 </li>
                 <li class="fright">
-                    <div class="footer-link">help</div>
+                    <a class="footer-link" href="http://join.chronozoomproject.org/open-source-project/">help</a>
                 </li>
             </ul>
         </div>

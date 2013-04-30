@@ -28,6 +28,7 @@ using System.Web;
 using System.Web.Script.Services;
 using Chronozoom.Entities;
 using Newtonsoft.Json;
+using System.Web.Mvc;
 
 namespace UI
 {
@@ -47,7 +48,7 @@ namespace UI
         private const string _defaultUserName = "anonymous";
         private const string _sandboxSuperCollectionName = "Sandbox";
         private const string _sandboxCollectionName = "Sandbox";
-        
+
         // The default number of max elements returned by the API
         private static Lazy<int> _maxElements = new Lazy<int>(() =>
         {
@@ -157,7 +158,7 @@ namespace UI
             var exhibits = _storage.Exhibits.Where(_ => _.Title.ToUpper().Contains(searchTerm) && _.Collection.Id == collectionId).ToList();
             searchResults.AddRange(exhibits.Select(exhibit => new SearchResult { Id = exhibit.Id, Title = exhibit.Title, ObjectType = ObjectType.Exhibit }));
 
-            var contentItems = _storage.ContentItems.Where(_ => 
+            var contentItems = _storage.ContentItems.Where(_ =>
                 (_.Title.ToUpper().Contains(searchTerm) || _.Caption.ToUpper().Contains(searchTerm))
                  && _.Collection.Id == collectionId
                 ).ToList();
@@ -190,9 +191,15 @@ namespace UI
             return new BaseJsonResult<IEnumerable<Reference>>(exhibit.References.ToList());
         }
 
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "/tours")]
+        public BaseJsonResult<IEnumerable<Tour>> GetDefaultTours()
+        {
+            return GetTours("", "");
+        }
+
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Not appropriate")]
         [OperationContract]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, UriTemplate = "/{supercollection}/{collection}/tours")]
         public BaseJsonResult<IEnumerable<Tour>> GetTours(string supercollection, string collection)
         {
             Trace.TraceInformation("Get Tours");
@@ -334,6 +341,17 @@ namespace UI
             });
         }
 
+        [OperationContract]
+        [WebInvoke(Method = "GET", UriTemplate = "/user", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        public User GetUser()
+        {
+            return AuthenticatedOperation(user =>
+            {
+                //return new User() { DisplayName = "Yuriy",Email="yuriy@mstlab.org" };
+                return user;
+            });
+        }
+
         private void DeleteSuperCollection(string superCollectionName)
         {
             AuthenticatedOperation(delegate(User user)
@@ -421,7 +439,7 @@ namespace UI
             GC.SuppressFinalize(this);
         }
 
-        ~ChronozoomSVC() 
+        ~ChronozoomSVC()
         {
             // Finalizer calls Dispose(false)
             Dispose(false);
@@ -476,7 +494,7 @@ namespace UI
                 supercollection.ToLower(),
                 collection.ToLower()));
         }
-        
+
         /// <summary>
         /// Replace with URL friendly representations. For instance, converts space to '-'.
         /// </summary>
