@@ -11,52 +11,52 @@ var maxImageHeight = 40;
 
 // This function will be called back by the HRD metadata, and is responsible for displaying the sign-in page.
 function ShowSigninPage(json) {
-    var cookieName = GetHRDCookieName();
-    var numIdentityProviderButtons = 0;
-    var showEmailEntry = false;
-    var showMoreOptionsLink = false;
-    identityProviders = json;
+    //var cookieName = GetHRDCookieName();
+    //var numIdentityProviderButtons = 0;
+    //var showEmailEntry = false;
+    //var showMoreOptionsLink = false;
+    //identityProviders = json;
             
-    if (identityProviders.length == 0) {
-        var mainDiv = document.getElementById("SignInContent");
-        mainDiv.appendChild(document.createElement("br"));
-        mainDiv.appendChild(document.createTextNode("Error: No identity providers are associated with this application."));
-    }
+    //if (identityProviders.length == 0) {
+    //    var mainDiv = document.getElementById("SignInContent");
+    //    mainDiv.appendChild(document.createElement("br"));
+    //    mainDiv.appendChild(document.createTextNode("Error: No identity providers are associated with this application."));
+    //}
 
-    // Loop through the identity providers
-    for (var i in identityProviders) {
-        // Show all sign-in options if no cookie is set
-        if (cookieName === null) {
-            if (identityProviders[i].EmailAddressSuffixes.length > 0) {
-                showEmailEntry = true;
-            }
-            else {
-                // Only show a button if there is no email address configured for this identity provider.
-                CreateIdentityProviderButton(identityProviders[i]);
-                numIdentityProviderButtons++;
-            }
-        }
-            // Show only the last selected identity provider if a cookie is set
-        else {
-            if (cookieName == identityProviders[i].Name) {
-                CreateIdentityProviderButton(identityProviders[i]);
-                numIdentityProviderButtons++;
-            }
-            else {
-                showMoreOptionsLink = true;
-            }
-        }
-    }
-    //If the user had a cookie but it didn't match any current identity providers, show all sign-in options 
-    if (cookieName !== null && numIdentityProviderButtons === 0 && !showEmailEntry) {
-        ShowDefaultSigninPage();
-    }
-        //Othewise, render the sign-in page normally
-    else {
-        ShowSigninControls(numIdentityProviderButtons, showEmailEntry, showMoreOptionsLink);
-    }
+    //// Loop through the identity providers
+    //for (var i in identityProviders) {
+    //    // Show all sign-in options if no cookie is set
+    //    if (cookieName === null) {
+    //        if (identityProviders[i].EmailAddressSuffixes.length > 0) {
+    //            showEmailEntry = true;
+    //        }
+    //        else {
+    //            // Only show a button if there is no email address configured for this identity provider.
+    //            CreateIdentityProviderButton(identityProviders[i]);
+    //            numIdentityProviderButtons++;
+    //        }
+    //    }
+    //        // Show only the last selected identity provider if a cookie is set
+    //    else {
+    //        if (cookieName == identityProviders[i].Name) {
+    //            CreateIdentityProviderButton(identityProviders[i]);
+    //            numIdentityProviderButtons++;
+    //        }
+    //        else {
+    //            showMoreOptionsLink = true;
+    //        }
+    //    }
+    //}
+    ////If the user had a cookie but it didn't match any current identity providers, show all sign-in options 
+    //if (cookieName !== null && numIdentityProviderButtons === 0 && !showEmailEntry) {
+    //    ShowDefaultSigninPage();
+    //}
+    //    //Othewise, render the sign-in page normally
+    //else {
+    //    ShowSigninControls(numIdentityProviderButtons, showEmailEntry, showMoreOptionsLink);
+    //}
 
-    document.getElementById("Main").style.display = "";
+    //document.getElementById("Main").style.display = "";
 }
 
 // Resets the sign-in page to its original state before the user logged in and received a cookie.

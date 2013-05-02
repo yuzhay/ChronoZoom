@@ -355,19 +355,19 @@ module CZ {
         /**
         * Update user profile.
         * @param  {Object} username .
-        * @param  {Object} display_name .
         * @param  {Object} email .
         */
-        export function putProfile(username, email) {
+        export function putProfile(displayName, email) {
             var request = new Service.Request(_serviceUrl);
-            request.addToPath("profile");
-            alert(username);
+            request.addToPath("user");
+            var user = { "Id": "00000000-0000-0000-0000-000000000000", "DisplayName": displayName, "Email": email };
             return $.ajax({
                 type: "PUT",
                 cache: false,
                 dataType: "json",
                 url: request.url,
-                data: JSON.stringify({})
+                //data: "{DisplayName:\"" + displayName + "\", Email:\"" + email + "\"}"
+                data: JSON.stringify(user)
             });
         }
 
@@ -375,25 +375,23 @@ module CZ {
         * Delete user profile.
         * @param  {Object} username .
         */
-        export function deleteProfile(username) {
+        export function deleteProfile(displayName) {
             var request = new Service.Request(_serviceUrl);
-            request.addToPath("profile");
-
+            request.addToPath("user");
+            var user = { "Id": "00000000-0000-0000-0000-000000000000", "DisplayName": displayName};
             return $.ajax({
                 type: "DELETE",
                 cache: false,
                 dataType: "json",
                 url: request.url,
-                data: JSON.stringify({})
+                data: JSON.stringify(user)
             });
         }
 
         export function getProfile() {
             var request = new Service.Request(_serviceUrl);
             request.addToPath("profile");
-
             return $.ajax({ url: "/chronozoom.svc/user"}).done(function (data) {  return data; });
-            //return JSON.stringify({ username: "Skylark", email: "yuriy@mstlab.org" });
         }
     }
 }

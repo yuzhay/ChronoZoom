@@ -25,7 +25,7 @@ module CZ {
             Disabled,
             RootCollection,
             NotRootCollection,
-            }
+        }
 
         // Basic Flight-Control (Tracks the features that are enabled)
         //
@@ -68,7 +68,7 @@ module CZ {
 
         $(document).ready(function () {
 
-           
+
 
             //Ensures there will be no 'console is undefined' errors
             window.console = window.console || <any>(function () {
@@ -79,12 +79,12 @@ module CZ {
             })();
 
             $('.bubbleInfo').hide();
-
+            //var profileForm;
             CZ.Common.initialize();
             CZ.UILoader.loadAll(_uiMap).done(function () {
                 // TODO: Get UI components.
                 var forms = arguments;
-                var form = new CZ.UI.FormEditProfile(forms[1], {
+                var profileForm = new CZ.UI.FormEditProfile(forms[1], {
                     activationSource: $("#showButton"),
                     navButton: ".cz-form-nav",
                     closeButton: ".cz-form-close-btn > .cz-form-btn",
@@ -96,10 +96,37 @@ module CZ {
                     agreeInput: ".cz-form-agree",
                     context: ""
                 });
- 
+
                 $("#edit_profile_button").click(function () {
-                    form.show();
+                    profileForm.show();
                 });
+
+                CZ.Service.getProfile().done(data => {
+
+                    //Not authorized
+                    if (data == "") {
+                        //alert("1: " + data);
+                        $("#login-panel").show();                       
+                    }
+                    //Authorized for a first time
+                    else if (data != "" && data.DisplayName == null) {
+                        //alert("2: "+data + " " + data.DisplayName);
+                        $("#profile-panel").show();
+                        profileForm.show();
+                    } else {
+                        $("#profile-panel").show();
+                        $("#profile-panel span.auth-panel-login").html(data.DisplayName);
+                    }
+                });
+
+                //Login/Logout button
+                //$.ajax({
+                //    url: "/account/isauth"
+                //}).done(function (data) {
+                //    if (data == "True") {
+                //        profileForm.show();
+                //    } 
+                //});
 
                 var form_login = new CZ.UI.FormLogin(forms[2], {
                     activationSource: $("#showButton"),
@@ -114,7 +141,7 @@ module CZ {
                     form_login.show();
                 });
 
-                
+
             });
 
             var url = CZ.UrlNav.getURL();
@@ -128,11 +155,9 @@ module CZ {
                     $(this).css("background-color", "");
                 });
 
-                if ($(event.target).parent().css("background-color") != "#0464A2")
-                {
+                if ($(event.target).parent().css("background-color") != "#0464A2") {
                     $(event.target).parent().css("background-color", "#0464A2")
-                } else
-                {
+                } else {
                     $(event.target).parent().css("background-color", "");
                 }
             });
@@ -200,30 +225,22 @@ module CZ {
             $('#biblCloseButton')
                 .mouseout(() => { CZ.Common.toggleOffImage('biblCloseButton', 'png'); })
                 .mouseover(() => { CZ.Common.toggleOnImage('biblCloseButton', 'png'); })
-            
-            ////Login/Logout button
+
+
+
+            //Login/Logout button
             //$.ajax({
-            //    url: "/account/isauth"
+            //    url: "/chronozoom.svc/user"
             //}).done(function (data) {
-            //    if (data != "True") {
+            //    if (data == "") {
             //        $("#login-panel").show();
             //    } else {
-            //        //$("#logout_button").show();
             //        $("#profile-panel").show();
+            //        $("#profile-panel span.auth-panel-login").html(data.DisplayName);
             //    }
             //});
 
-            //Login/Logout button
-            $.ajax({
-                url: "/chronozoom.svc/user"
-            }).done(function (data) {
-                if (data == "") {
-                    $("#login-panel").show();
-                } else {
-                    $("#profile-panel").show();
-                    $("#profile-panel span.auth-panel-login").html(data.DisplayName);
-                }
-            });
+
 
             var wlcmScrnCookie = CZ.Common.getCookie("welcomeScreenDisallowed");
             if (wlcmScrnCookie != null) {
@@ -242,7 +259,7 @@ module CZ {
 
             // Feature activation control
             _featureMap.forEach(function (feature) {
-                var enabled : bool = true;
+                var enabled: bool = true;
 
                 if (feature.Activation === FeatureActivation.Disabled) {
                     enabled = false;

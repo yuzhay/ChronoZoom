@@ -11,7 +11,8 @@ namespace Chronozoom.Test
         public const string ChromeDriverDirectory = "../../../../External/WebDrivers/";
         public const string IeDriverDirectory = "../../../../External/WebDrivers/";
 
-        public const string StartPagePrefix = "http://localhost:4949/";
+        //public const string StartPagePrefix = "http://localhost:4949/";
+        public const string StartPagePrefix = "http://localhost/";
         public const string RCDefaultAddress = "http://localhost:4444/wb/hub/";
         public const string RCDefaultPath = "/wd/hub/";
         public const int RCDefaultPort = 4444;

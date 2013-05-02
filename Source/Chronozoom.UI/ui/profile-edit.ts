@@ -46,12 +46,15 @@ module CZ {
             private initialize(): void {
                 var profile = CZ.Service.getProfile();
                 profile.done(data => {
-                    if (data != null) {
+                    if (data.DisplayName != null) {
                         this.usernameInput.val(data.DisplayName);
-                        this.usernameInput.prop('disabled', true);
+                        if (data.DisplayName != "") {
+                            this.usernameInput.prop('disabled', true);
+                            this.agreeInput.attr('checked', true);
+                            this.agreeInput.prop('disabled', true);
+                        }
                         this.emailInput.val(data.Email);
-                        this.agreeInput.attr('checked', true);
-                        this.agreeInput.prop('disabled', true);
+
                     }
                 });
 

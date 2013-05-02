@@ -247,7 +247,6 @@ namespace UI
             return AuthenticatedOperation<String>(delegate(User user)
             {
                 Trace.TraceInformation("Put User");
-
                 if (userRequest == null)
                 {
                     SetStatusCode(HttpStatusCode.BadRequest, ErrorDescription.RequestBodyEmpty);
