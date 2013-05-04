@@ -9,8 +9,7 @@
 module CZ {
     export module Authoring {
         export module UI {
-
-            /**
+  /**
                 * Appends editable field of content item to element.
                 * @param {Object}   form          Target DOM element found with jQuery.
                 * @param {Boolean}  addSeparator  Indicates whether separator is required.
@@ -191,8 +190,8 @@ module CZ {
                     }
                 });
             }
-            
-            export function showCreateTimelineForm (t) {
+
+            export function showCreateTimelineForm(t) {
                 var isCancel = true;
                 var titleInput = $("#timelineTitleInput");
                 var startInput = new CZ.UI.DatePicker($("#timelineStartInput"));
@@ -247,7 +246,7 @@ module CZ {
                 });
             }
 
-            export function showEditTimelineForm (t) {
+            export function showEditTimelineForm(t) {
                 var titleInput = $("#timelineTitleInput");
                 var startInput = new CZ.UI.DatePicker($("#timelineStartInput"));
                 var endInput = new CZ.UI.DatePicker($("#timelineEndInput"));
@@ -302,7 +301,7 @@ module CZ {
                 });
             }
 
-            export function showCreateExhibitForm (e) {
+            export function showCreateExhibitForm(e) {
                 var isCancel = true;
                 var titleInput = $("#exhibitTitleInput");
                 var dateInput = new CZ.UI.DatePicker($("#exhibitDateInput"));
@@ -366,7 +365,7 @@ module CZ {
                 });
             }
 
-            export function showEditExhibitForm (e) {
+            export function showEditExhibitForm(e) {
                 var titleInput = $("#exhibitTitleInput");
                 var dateInput = new CZ.UI.DatePicker($("#exhibitDateInput"));
 
@@ -437,7 +436,7 @@ module CZ {
                 });
             }
 
-            export function showEditContentItemForm (c, e) {
+            export function showEditContentItemForm(c, e) {
                 var titleInput = $("#contentItemTitleInput");
                 var mediaInput = $("#contentItemMediaSourceInput");
                 var descriptionInput = $("#contentItemDescriptionInput");
@@ -498,6 +497,80 @@ module CZ {
                 });
             }
 
+            // Mouseup handlers.
+
+            export function createTimeline() {
+                // skip authoring during ongoing dynamic layout animation
+                if (CZ.Layout.animatingElements.length != 0) {
+                    return;
+                }
+
+                CZ.Authoring.isActive = (CZ.Authoring.mode !== "createTimeline") || !CZ.Authoring.isActive;
+                CZ.Authoring.mode = "createTimeline";
+
+                $("div #footer-authoring > a").removeClass("active");
+
+                if (CZ.Authoring.isActive) {
+                    $("a:contains('create timeline')").addClass("active");
+                } else {
+                    $("a:contains('create timeline')").removeClass("active");
+                }
+            }
+
+            export function editTimeline() {
+                // skip authoring during ongoing dynamic layout animation
+                if (CZ.Layout.animatingElements.length != 0) {
+                    return;
+                }
+
+                CZ.Authoring.isActive = (CZ.Authoring.mode !== "editTimeline") || !CZ.Authoring.isActive;
+                CZ.Authoring.mode = "editTimeline";
+
+                $("div #footer-authoring > a").removeClass("active");
+
+                if (CZ.Authoring.isActive) {
+                    $("a:contains('edit timeline')").addClass("active");
+                } else {
+                    $("a:contains('edit timeline')").removeClass("active");
+                }
+            }
+
+            export function createExhibit() {
+                // skip authoring during ongoing dynamic layout animation
+                if (CZ.Layout.animatingElements.length != 0) {
+                    return;
+                }
+
+                CZ.Authoring.isActive = (CZ.Authoring.mode !== "createExhibit") || !CZ.Authoring.isActive;
+                CZ.Authoring.mode = "createExhibit";
+
+                $("div #footer-authoring > a").removeClass("active");
+
+                if (CZ.Authoring.isActive) {
+                    $("a:contains('create exhibit')").addClass("active");
+                } else {
+                    $("a:contains('create exhibit')").removeClass("active");
+                }
+            }
+
+            export function editExhibit() {
+                // skip authoring during ongoing dynamic layout animation
+                if (CZ.Layout.animatingElements.length != 0) {
+                    return;
+                }
+
+                CZ.Authoring.isActive = (CZ.Authoring.mode !== "editExhibit") || !CZ.Authoring.isActive;
+                CZ.Authoring.mode = "editExhibit";
+
+                $("div #footer-authoring > a").removeClass("active");
+
+                if (CZ.Authoring.isActive) {
+                    $("a:contains('edit exhibit')").addClass("active");
+                } else {
+                    $("a:contains('edit exhibit')").removeClass("active");
+                }
+            }
+
             export function showEditProfileForm() {
                 var username = $("#profile_username");
                 var email = $("#profile_email");
@@ -532,77 +605,8 @@ module CZ {
 
             // Mouseup handlers.
 
-            export function createTimeline () {
-                // skip authoring during ongoing dynamic layout animation
-                if (CZ.Layout.animatingElements.length != 0) {
-                    return;
-                }
 
-                CZ.Authoring.isActive = (CZ.Authoring.mode !== "createTimeline") || !CZ.Authoring.isActive;
-                CZ.Authoring.mode = "createTimeline";
 
-                $("div #footer-authoring > a").removeClass("active");
-
-                if (CZ.Authoring.isActive) {
-                    $("a:contains('create timeline')").addClass("active");
-                } else {
-                    $("a:contains('create timeline')").removeClass("active");
-                }
-            }
-
-            export function editTimeline () {
-                // skip authoring during ongoing dynamic layout animation
-                if (CZ.Layout.animatingElements.length != 0) {
-                    return;
-                }
-
-                CZ.Authoring.isActive = (CZ.Authoring.mode !== "editTimeline") || !CZ.Authoring.isActive;
-                CZ.Authoring.mode = "editTimeline";
-
-                $("div #footer-authoring > a").removeClass("active");
-
-                if (CZ.Authoring.isActive) {
-                    $("a:contains('edit timeline')").addClass("active");
-                } else {
-                    $("a:contains('edit timeline')").removeClass("active");
-                }
-            }
-
-            export function createExhibit () {
-                // skip authoring during ongoing dynamic layout animation
-                if (CZ.Layout.animatingElements.length != 0) {
-                    return;
-                }
-
-                CZ.Authoring.isActive = (CZ.Authoring.mode !== "createExhibit") || !CZ.Authoring.isActive;
-                CZ.Authoring.mode = "createExhibit";
-
-                $("div #footer-authoring > a").removeClass("active");
-
-                if (CZ.Authoring.isActive) {
-                    $("a:contains('create exhibit')").addClass("active");
-                } else {
-                    $("a:contains('create exhibit')").removeClass("active");
-                }
-            }
-
-            export function editExhibit () {
-                // skip authoring during ongoing dynamic layout animation
-                if (CZ.Layout.animatingElements.length != 0) {
-                    return;
-                }
-
-                CZ.Authoring.isActive = (CZ.Authoring.mode !== "editExhibit") || !CZ.Authoring.isActive;
-                CZ.Authoring.mode = "editExhibit";
-
-                $("div #footer-authoring > a").removeClass("active");
-
-                if (CZ.Authoring.isActive) {
-                    $("a:contains('edit exhibit')").addClass("active");
-                } else {
-                    $("a:contains('edit exhibit')").removeClass("active");
-                }
-            }
 
             export function editProfile() {
                 // skip authoring during ongoing dynamic layout animation
@@ -625,6 +629,8 @@ module CZ {
                 CZ.Authoring.mode = "login";
                 CZ.Authoring.showLoginForm();
             }
+
+
         }
     }
 }

@@ -279,7 +279,7 @@ namespace UI
                     User newUser = new User { Id = Guid.NewGuid(), DisplayName = userRequest.DisplayName, Email = userRequest.Email };
                     newUser.NameIdentifier = user.NameIdentifier;
                     newUser.IdentityProvider = user.IdentityProvider;
-                    collectionUri = UpdatePersonalCollection(userRequest.NameIdentifier, newUser);
+                    collectionUri = UpdatePersonalCollection(newUser.NameIdentifier, newUser);
                 }
                 else
                 {
@@ -344,9 +344,16 @@ namespace UI
         [WebInvoke(Method = "GET", UriTemplate = "/user", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         public User GetUser()
         {
-            return AuthenticatedOperation(user =>
+            return AuthenticatedOperation(delegate(User user)
             {
-                //return new User() { DisplayName = "Yuriy",Email="yuriy@mstlab.org" };
+                Trace.TraceInformation("Get User");
+                if (user == null)
+                {
+                    SetStatusCode(HttpStatusCode.BadRequest, ErrorDescription.RequestBodyEmpty);
+                    return null;
+                }
+                var u = _storage.Users.Where(candidate => candidate.NameIdentifier == user.NameIdentifier).FirstOrDefault();
+                if (u != null) return u;
                 return user;
             });
         }

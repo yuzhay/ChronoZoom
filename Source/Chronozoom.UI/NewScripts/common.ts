@@ -73,8 +73,7 @@ module CZ {
                 showEditContentItemForm: CZ.Authoring.UI.showEditContentItemForm,
                 showEditProfileForm: CZ.Authoring.UI.showEditProfileForm,
                 showLoginForm: CZ.Authoring.UI.showLoginForm
-            });
-        }
+            });        }
         
         
         /* Calculates local offset of mouse cursor in specified jQuery element.

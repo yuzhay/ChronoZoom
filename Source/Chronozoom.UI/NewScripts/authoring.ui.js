@@ -405,39 +405,6 @@ var CZ;
                 });
             }
             UI.showEditContentItemForm = showEditContentItemForm;
-            function showEditProfileForm() {
-                var username = $("#profile_username");
-                var email = $("#profile_email");
-                var display_name = $("profile_display_name");
-                var agreement = $("profile_agreement");
-                $("#editProfileForm").dialog({
-                    title: "edit profile",
-                    modal: true,
-                    height: 600,
-                    width: 600,
-                    buttons: {
-                        "save and close": function () {
-                            CZ.Service.putProfile(username, email);
-                        }
-                    },
-                    close: function () {
-                        CZ.Authoring.isActive = false;
-                    }
-                });
-            }
-            UI.showEditProfileForm = showEditProfileForm;
-            function showLoginForm() {
-                $("#loginForm").dialog({
-                    title: "login",
-                    modal: true,
-                    height: 600,
-                    width: 600,
-                    close: function () {
-                        CZ.Authoring.isActive = false;
-                    }
-                });
-            }
-            UI.showLoginForm = showLoginForm;
             function createTimeline() {
                 if(CZ.Layout.animatingElements.length != 0) {
                     return;
@@ -494,6 +461,39 @@ var CZ;
                 }
             }
             UI.editExhibit = editExhibit;
+            function showEditProfileForm() {
+                var username = $("#profile_username");
+                var email = $("#profile_email");
+                var display_name = $("profile_display_name");
+                var agreement = $("profile_agreement");
+                $("#editProfileForm").dialog({
+                    title: "edit profile",
+                    modal: true,
+                    height: 600,
+                    width: 600,
+                    buttons: {
+                        "save and close": function () {
+                            CZ.Service.putProfile(username, email);
+                        }
+                    },
+                    close: function () {
+                        CZ.Authoring.isActive = false;
+                    }
+                });
+            }
+            UI.showEditProfileForm = showEditProfileForm;
+            function showLoginForm() {
+                $("#loginForm").dialog({
+                    title: "login",
+                    modal: true,
+                    height: 600,
+                    width: 600,
+                    close: function () {
+                        CZ.Authoring.isActive = false;
+                    }
+                });
+            }
+            UI.showLoginForm = showLoginForm;
             function editProfile() {
                 if(CZ.Layout.animatingElements.length != 0) {
                     return;

@@ -280,14 +280,13 @@ var CZ;
             var request = new Service.Request(_serviceUrl);
             request.addToPath("user");
             var user = {
-                "Id": "00000000-0000-0000-0000-000000000000",
                 "DisplayName": displayName,
                 "Email": email
             };
             return $.ajax({
                 type: "PUT",
                 cache: false,
-                dataType: "json",
+                contentType: "application/json",
                 url: request.url,
                 data: JSON.stringify(user)
             });
@@ -297,13 +296,12 @@ var CZ;
             var request = new Service.Request(_serviceUrl);
             request.addToPath("user");
             var user = {
-                "Id": "00000000-0000-0000-0000-000000000000",
                 "DisplayName": displayName
             };
             return $.ajax({
                 type: "DELETE",
                 cache: false,
-                dataType: "json",
+                contentType: "application/json",
                 url: request.url,
                 data: JSON.stringify(user)
             });

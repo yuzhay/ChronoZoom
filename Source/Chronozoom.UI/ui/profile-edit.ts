@@ -8,6 +8,7 @@ module CZ {
 
         export interface FormEditProfileInfo extends CZ.UI.FormBaseInfo {
             saveButton: string;
+            logoutButton: string;
             usernameInput: string;
             emailInput: string;
             agreeInput: string;
@@ -16,6 +17,7 @@ module CZ {
 
         export class FormEditProfile extends CZ.UI.FormBase {
             private saveButton: JQuery;
+            private logoutButton: JQuery;
             private titleInput: JQuery;
 
             private isCancel: bool;
@@ -27,6 +29,7 @@ module CZ {
                 super(container, formInfo);
 
                 this.saveButton = container.find(formInfo.saveButton);
+                this.logoutButton = container.find(formInfo.logoutButton);
                 this.usernameInput = container.find(formInfo.usernameInput);
                 this.emailInput = container.find(formInfo.emailInput);
                 this.agreeInput = container.find(formInfo.agreeInput);
@@ -78,8 +81,8 @@ module CZ {
                     }
 
                     CZ.Service.putProfile(this.usernameInput.val(), this.emailInput.val()).then(
-                        function (success) {
-                            self.close();
+                        success => {
+                            super.close();
                         },
                         function (error) {
                             alert("Unable to save changes. Please try again later.");
@@ -87,6 +90,17 @@ module CZ {
                         }
                     );
 
+                });
+                this.logoutButton.click(event =>
+                {
+                    return $.ajax({ url: "/account/logout" }).done(data =>
+                    {
+                        $("#profile-panel").hide();
+                        $("#login-panel").show();
+                        super.close();
+                    });
+
+                    
                 });
 
             }

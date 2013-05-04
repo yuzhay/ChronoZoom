@@ -11,6 +11,7 @@ var CZ;
             function FormEditProfile(container, formInfo) {
                         _super.call(this, container, formInfo);
                 this.saveButton = container.find(formInfo.saveButton);
+                this.logoutButton = container.find(formInfo.logoutButton);
                 this.usernameInput = container.find(formInfo.usernameInput);
                 this.emailInput = container.find(formInfo.emailInput);
                 this.agreeInput = container.find(formInfo.agreeInput);
@@ -55,10 +56,19 @@ var CZ;
                         return;
                     }
                     CZ.Service.putProfile(_this.usernameInput.val(), _this.emailInput.val()).then(function (success) {
-                        self.close();
+                        _super.prototype.close.call(_this);
                     }, function (error) {
                         alert("Unable to save changes. Please try again later.");
                         console.log(error);
+                    });
+                });
+                this.logoutButton.click(function (event) {
+                    return $.ajax({
+                        url: "/account/logout"
+                    }).done(function (data) {
+                        $("#profile-panel").hide();
+                        $("#login-panel").show();
+                        _super.prototype.close.call(_this);
                     });
                 });
             };

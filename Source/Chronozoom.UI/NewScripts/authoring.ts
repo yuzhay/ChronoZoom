@@ -31,8 +31,26 @@ module CZ {
         var _circleCur : any = { type: "circle" };
 
         // Selected objects for editing.
-        var _selectedTimeline : any = {};
-        var _selectedExhibit : any = {};
+        export var selectedTimeline : any = {};
+        export var selectedExhibit: any = {};
+        export var selectedContentItem: any = {};
+
+
+        // Authoring Tool state.
+        export var isActive: bool = false;
+        export var isEnabled: bool = false;
+        export var isDragging: bool = false;
+
+        //TODO: use enum for authoring modes when new authoring forms will be completly integrated
+        export var mode: any = null;
+		export var contentItemMode: any = null;
+
+        // Forms' handlers.
+        export var showCreateTimelineForm: (...args: any[]) => any = null;
+        export var showEditTimelineForm: (...args: any[]) => any = null;
+        export var showCreateExhibitForm: (...args: any[]) => any = null;
+        export var showEditExhibitForm: (...args: any[]) => any = null;
+        export var showEditContentItemForm: (...args: any[]) => any = null;
 
         /**
          * Tests a timeline/exhibit on intersection with another virtual canvas object.
@@ -96,16 +114,16 @@ module CZ {
 
             // Test on intersections with parent's children.
             for (i = 0, len = tp.children.length; i < len; ++i) {
-                selfIntersection = editmode ? (tp.children[i] === _selectedTimeline) : (tp.children[i] === tc);
+                selfIntersection = editmode ? (tp.children[i] === selectedTimeline) : (tp.children[i] === tc);
                 if (!selfIntersection && isIntersecting(tc, tp.children[i])) {
                     return false;
                 }
             }
 
             // Test on children's inclusion (only possible in editmode).
-            if (editmode && _selectedTimeline.children && _selectedTimeline.children.length > 0) {
-                for (i = 0, len = _selectedTimeline.children.length; i < len; ++i) {
-                    if (!isIncluded(tc, _selectedTimeline.children[i])) {
+            if (editmode && selectedTimeline.children && selectedTimeline.children.length > 0) {
+                for (i = 0, len = selectedTimeline.children.length; i < len; ++i) {
+                    if (!isIncluded(tc, selectedTimeline.children[i])) {
                         return false;
                     }
                 }
@@ -135,7 +153,7 @@ module CZ {
 
             // Test on intersections with parent's children.
             for (i = 0, len = tp.children.length; i < len; ++i) {
-                selfIntersection = editmode ? (tp.children[i] === _selectedExhibit) : (tp.children[i] === ec);
+                selfIntersection = editmode ? (tp.children[i] === selectedExhibit) : (tp.children[i] === ec);
                 if (!selfIntersection && isIntersecting(ec, tp.children[i])) {
                     return false;
                 }
@@ -220,7 +238,7 @@ module CZ {
          * Use it in when you need to update exhibit's or some of its content item's info.
          * @param  {Object} e    An exhibit to renew.
          */
-        function renewExhibit(e) {
+        export function renewExhibit(e) {
             var vyc = e.y + e.height / 2;
             var time = e.x + e.width / 2;
             var id = e.id;
@@ -275,7 +293,7 @@ module CZ {
                 _circleCur.x + _circleCur.r,
                 _circleCur.y + _circleCur.r,
                 _circleCur.r,
-                [{
+                [/*{
                     id: undefined,
                     guid: undefined,
                     title: "Content Item Title",
@@ -283,7 +301,7 @@ module CZ {
                     uri: "",
                     mediaType: "image",
                     parent: _hovered.guid
-                }],
+                }*/],
                 {
                     title: "Exhibit Title",
                     date: _circleCur.x + _circleCur.r,
@@ -305,6 +323,15 @@ module CZ {
             var baseline = t.y + marginTop + headerSize / 2.0;
 
             CZ.VCContent.removeChild(t, t.id + "__header__");
+
+            //remove edit button to reinitialize it
+            if (CZ.Authoring.isEnabled && typeof t.editButton !== "undefined") {
+                t.editButton.x = t.x + t.width - 1.15 * t.titleObject.height;
+                t.editButton.y = t.titleObject.y;
+                t.editButton.width = t.titleObject.height;
+                t.editButton.height = t.titleObject.height;
+            }
+
             t.titleObject = CZ.VCContent.addText(
                 t,
                 t.layerid,
@@ -323,21 +350,8 @@ module CZ {
             );
         }
 
-        // Authoring Tool state.
-        export var isActive : any = false;
-        export var isDragging : any = false;
-        export var mode : any = null;
-
-        // Forms' handlers.
-        export var showCreateTimelineForm : any = null;
-        export var showEditTimelineForm : any = null;
-        export var showCreateExhibitForm : any = null;
-        export var showEditExhibitForm : any = null;
-        export var showEditContentItemForm: any = null;
-
         export var showEditProfileForm: any = null;
         export var showLoginForm: any = null;
-
         /**
          * Represents a collection of mouse events' handlers for each mode.
          * Example of using: CZ.Authoring.modeMouseHandlers[CZ.Authoring.mode]["mouseup"]();
@@ -359,28 +373,15 @@ module CZ {
                     if (_hovered.type === "timeline") {
                         updateNewRectangle();
 
-                        _selectedTimeline = createNewTimeline();
-                        showCreateTimelineForm(_selectedTimeline);
+                        selectedTimeline = createNewTimeline();
+                        showCreateTimelineForm(selectedTimeline);
                     }
                 }
             },
 
             editTimeline: {
-                mousemove: function () {
-                    _hovered = _vcwidget.hovered || {};
-                    if (_hovered.type === "timeline") {
-                        _hovered.settings.strokeStyle = "red";
-                    }
-                },
-
                 mouseup: function () {
-                    if (_hovered.type === "timeline") {
-                        _selectedTimeline = _hovered;
-                        showEditTimelineForm(_selectedTimeline);
-                    } else if (_hovered.type === "infodot" || _hovered.type === "contentItem") {
-                        _selectedTimeline = _hovered.parent;
-                        showEditTimelineForm(_selectedTimeline);
-                    }
+                    showEditTimelineForm(selectedTimeline);
                 }
             },
 
@@ -395,28 +396,21 @@ module CZ {
                     if (_hovered.type === "timeline") {
                         updateNewCircle();
 
-                        _selectedExhibit = createNewExhibit();
-                        showCreateExhibitForm(_selectedExhibit);
+                        selectedExhibit = createNewExhibit();
+                        showCreateExhibitForm(selectedExhibit);
                     }
                 }
             },
 
             editExhibit: {
-                mousemove: function () {
-                    _hovered = _vcwidget.hovered || {};
-                    if (_hovered.type === "infodot") {
-                        _hovered.settings.strokeStyle = "red";
-                    }
-                },
-
                 mouseup: function () {
-                    if (_hovered.type === "infodot") {
-                        _selectedExhibit = _hovered;
-                        showEditExhibitForm(_selectedExhibit);                        
-                    } else if (_hovered.type === "contentItem") {
-                        _selectedExhibit = _hovered.parent.parent.parent;
-                        showEditContentItemForm(_hovered, _selectedExhibit);
-                    }
+                    showEditExhibitForm(selectedExhibit);
+                }
+            },
+
+            editContentItem: {
+                mouseup: function () {
+                    showEditContentItemForm(selectedContentItem, selectedExhibit);
                 }
             },
 
@@ -573,7 +567,7 @@ module CZ {
 
             e = renewExhibit(e);
             
-            CZ.Service.putExhibit(e).then(
+            return CZ.Service.putExhibit(e).then(
                 function (response) {
                     var contentItems = e.contentItems;
                     var len = contentItems.length;
@@ -672,7 +666,7 @@ module CZ {
         */
         export function ValidateExhibitData(date,title,contentItems) {
             var isValid = CZ.Authoring.ValidateNumber(date);
-            isValid = isValid && CZ.Authoring.IsNotEmpty(title) && CZ.Authoring.IsNotEmpty(date) && CZ.Authoring.IsNotEmpty(date);
+            isValid = isValid && CZ.Authoring.IsNotEmpty(title) && CZ.Authoring.IsNotEmpty(date);
             isValid = isValid && CZ.Authoring.ValidateContentItems(contentItems);
             return isValid;
         }
@@ -707,16 +701,16 @@ module CZ {
             if (contentItems.length == 0) { return false; }
             var i = 0;
             while (contentItems[i] != null) {
-                var CI = contentItems[i];
-                isValid = isValid && CZ.Authoring.IsNotEmpty(CI.title) && CZ.Authoring.IsNotEmpty(CI.uri) && CZ.Authoring.IsNotEmpty(CI.mediaType);
+                var ci = contentItems[i];
+                isValid = isValid && CZ.Authoring.IsNotEmpty(ci.title) && CZ.Authoring.IsNotEmpty(ci.uri) && CZ.Authoring.IsNotEmpty(ci.mediaType);
 
-                if (CI.mediaType == "Image") {
+                if (ci.mediaType == "Image") {
                     var imageReg = /\.(jpg|jpeg|png)$/i;
-                    if (!imageReg.test(CI.uri)) {
+                    if (!imageReg.test(ci.uri)) {
                         alert("Sorry, only JPG/PNG images are supported");
                         isValid = false;
                     }
-                } else if (CI.mediaType == "Video") {
+                } else if (ci.mediaType == "Video") {
                     //YouTube
                     //Input: https://www.youtube.com/watch?v=j5-yKhDd64s
                     //Output: http://www.youtube.com/embed/j5-yKhDd64s
@@ -729,26 +723,26 @@ module CZ {
                     var vimeo = /vimeo\.com\/([0-9]+)/i
                     var vimeoEmbed = /player.vimeo.com\/video\/([0-9]+)/i
 
-                    if (youtube.test(CI.uri)) {
-                        var youtubeResult = CI.uri.match(youtube);
-                        CI.uri = "http://www.youtube.com/embed/" + youtubeResult[1];
-                    } else if (vimeo.test(CI.uri)) {
-                        var vimeoResult = CI.uri.match(vimeo);
-                        CI.uri = "http://player.vimeo.com/video/" + vimeoResult[1];
-                    } else if (youtubeEmbed.test(CI.uri) || vimeoEmbed.test(CI.uri)) {
+                    if (youtube.test(ci.uri)) {
+                        var youtubeResult = ci.uri.match(youtube);
+                        ci.uri = "http://www.youtube.com/embed/" + youtubeResult[1];
+                    } else if (vimeo.test(ci.uri)) {
+                        var vimeoResult = ci.uri.match(vimeo);
+                        ci.uri = "http://player.vimeo.com/video/" + vimeoResult[1];
+                    } else if (youtubeEmbed.test(ci.uri) || vimeoEmbed.test(ci.uri)) {
                         //Embedded link provided
                     } else {
                         alert("Sorry, only YouTube or Vimeo videos are supported");
                         isValid = false;
                     }
 
-                } else if (CI.mediaType == "PDF") {
+                } else if (ci.mediaType == "PDF") {
                     //Google PDF viewer
                     //Example: http://docs.google.com/viewer?url=http%3A%2F%2Fwww.selab.isti.cnr.it%2Fws-mate%2Fexample.pdf&embedded=true
                     var pdf = /\.(pdf)$/i;
 
-                    if (pdf.test(CI.uri)) {
-                        CI.uri = "http://docs.google.com/viewer?url=" + encodeURI(CI.uri) + "&embedded=true";
+                    if (pdf.test(ci.uri)) {
+                        ci.uri = "http://docs.google.com/viewer?url=" + encodeURI(ci.uri) + "&embedded=true";
                     } else {
                         alert("Sorry, only PDF extension is supported");
                         isValid = false;

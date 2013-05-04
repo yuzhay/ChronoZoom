@@ -360,13 +360,12 @@ module CZ {
         export function putProfile(displayName, email) {
             var request = new Service.Request(_serviceUrl);
             request.addToPath("user");
-            var user = { "Id": "00000000-0000-0000-0000-000000000000", "DisplayName": displayName, "Email": email };
+            var user = {"DisplayName": displayName, "Email": email };
             return $.ajax({
                 type: "PUT",
                 cache: false,
-                dataType: "json",
+                contentType: "application/json",
                 url: request.url,
-                //data: "{DisplayName:\"" + displayName + "\", Email:\"" + email + "\"}"
                 data: JSON.stringify(user)
             });
         }
@@ -378,11 +377,11 @@ module CZ {
         export function deleteProfile(displayName) {
             var request = new Service.Request(_serviceUrl);
             request.addToPath("user");
-            var user = { "Id": "00000000-0000-0000-0000-000000000000", "DisplayName": displayName};
+            var user = {"DisplayName": displayName};
             return $.ajax({
                 type: "DELETE",
                 cache: false,
-                dataType: "json",
+                contentType: "application/json",
                 url: request.url,
                 data: JSON.stringify(user)
             });

@@ -23,8 +23,6 @@
     <link rel="stylesheet" type="text/css" href="/NewStyles/cz.datepicker.css" />
     <link rel="stylesheet" type="text/css" href="/NewStyles/timescale.css" />
 
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
-
     <script type="text/javascript" src="/NewScripts/external/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="/NewScripts/external/jquery.cookie.js"></script>
     <script type="text/javascript" src="/NewScripts/external/rx.js"></script>
@@ -56,12 +54,16 @@
 
     <script type="text/javascript" src="/NewScripts/uiloader.js"></script>
     <script type="text/javascript" src="/NewScripts/controls/cz.datepicker.js"></script>
+    <script type="text/javascript" src="/NewScripts/controls/listboxbase.js"></script>
     <script type="text/javascript" src="/NewScripts/controls/formbase.js"></script>
     <script type="text/javascript" src="/NewScripts/cz.dates.js"></script>
 
-    <script type="text/javascript" src="/NewScripts/external/ACS.js"></script>
 
-    <!--[if IE]>
+    <script type="text/javascript" src="/NewScripts/external/ACS.js"></script>    <script type="text/javascript" src="/ui/contentitem-listbox.js"></script>
+    <script type="text/javascript" src="/ui/auth-edit-timeline.js"></script>
+    <script type="text/javascript" src="/ui/auth-edit-exhibit.js"></script>
+    <script type="text/javascript" src="/ui/auth-edit-contentitem-form.js"></script>
+    <script type="text/javascript" src="/ui/header-edit.js"></script>    <!--[if IE]>
     <script type="text/javascript" src="/NewScripts/regimesIE.js"></script>
     <![endif]-->
 
@@ -76,162 +78,50 @@
         <div class="fleft">
             <ul>
                 <li class="fleft">
-                    <img style="margin-top: 3px; margin-right: 40px;" title="ChronoZoom" src="/Images/chronzoom-200px-white.png" />
+                    <div class="header-logo"></div>
                 </li>
                 <li class="fleft">
-                    <div id="regime-link-cosmos" class="regime-link">cosmos</div>
+                    <div id="regime-link-cosmos" class="regime-link">Cosmos</div>
                 </li>
                 <li class="fleft">
-                    <div id="regime-link-earth" class="regime-link">earth</div>
+                    <div id="regime-link-earth" class="regime-link">Earth</div>
                 </li>
                 <li class="fleft">
-                    <div id="regime-link-life" class="regime-link">life</div>
+                    <div id="regime-link-life" class="regime-link">Life</div>
                 </li>
                 <li class="fleft">
-                    <div id="regime-link-prehistory" class="regime-link">prehistory</div>
+                    <div id="regime-link-prehistory" class="regime-link">Prehistory</div>
                 </li>
                 <li class="fleft">
-                    <div id="regime-link-humanity" class="regime-link">humanity</div>
+                    <div id="regime-link-humanity" class="regime-link">Humanity</div>
                 </li>
             </ul>
         </div>
         <div class="fright">
             <ul>
                 <li class="fleft">
-                    <img title="Take a guided tour" alt="Take a guided tour" id="tours_index" src="/Images/tours.png" />
-                </li>
+                    <div id="tours_index" class="header-icon tour-icon" title="Take a guided tour" data-enabled="true"></div>                </li>
                 <li class="fleft">
-                    <img id="search_button" title="Search ChronoZoom" alt="Search ChronoZoom" src="/Images/search.png" />
-                </li>
+                    <div id="search_button" class="header-icon search-icon" title="Search ChronoZoom" data-enabled="true"></div>                </li>
                 <li class="fleft">
-                    <img title=""  alt="" src="/Images/eye.png" />
-                </li>
+                    <div class="header-icon view-icon" title="View Collections" data-enabled="false"></div>                </li>
                 <li class="fleft">
-                    <img title="" alt="" src="/Images/pen.png" />
+                    <div class="header-icon edit-icon" title="Create your events" data-enabled="true"></div>
                 </li>
                 <li class="fleft">
                     <div style="display:none" id="login-panel">
                         <span class="auth-panel-login">sign in</span>
                         <img src="/Images/profile.png" id="login_button"/> 
                     </div>
- 
-                </li>
+                 </li>
                 <li class="fleft" >
                    <div style="display:none" id="profile-panel">
                         <span class="auth-panel-login"></span>
                         <img src="/Images/profile.png" id="edit_profile_button"/> 
                     </div>
-                </li>
-
-            </ul>
+                </li>            </ul>
         </div>
 
-        <div id="footer-authoring">
-
-            <a onclick="CZ.Authoring.UI.createTimeline()" class="footer-authoring-link">create timeline
-            </a>
-            <a onclick="CZ.Authoring.UI.editTimeline()" class="footer-authoring-link">edit timeline
-            </a>
-            <a onclick="CZ.Authoring.UI.createExhibit()" class="footer-authoring-link">create exhibit
-            </a>
-            <a onclick="CZ.Authoring.UI.editExhibit()" class="footer-authoring-link">edit exhibit
-            </a>
-
-            <!--Create Timeline popup dialog-->
-            <div id="createTimelineForm" style="background-color: rgb(60, 95, 150); display: none; color: white;">
-                <label style="display: block">title</label>
-                <input id="timelineTitleInput" style="display: block" type="text" />
-
-                <br />
-                <label style="display: block">start</label>
-                <div id="timelineStartInput" style="display: block"></div>
-
-                <br />
-                <label style="display: block">end</label>
-                <div id="timelineEndInput" style="display: block"></div>
-
-                <br />
-                <span id="TimelineErrorSpan" style="color: red; display: none">Input error                
-                </span>
-            </div>
-
-            <!--Create Exhibit popup dialog-->
-            <div id="createExhibitForm" style="background-color: rgb(60, 95, 150); display: none; color: white;">
-                <label style="display: block">Exhibit's title</label>
-                <input id="exhibitTitleInput" style="display: block" />
-
-                <br />
-                <label style="display: block">Exhibit's date</label>
-                <div id="exhibitDateInput" style="display: block"></div>
-
-                <br />
-                <span id="ExhibitErrorSpan" style="color: red; display: none">Input error
-                </span>
-
-                <hr />
-
-                <p>Content items:</p>
-            </div>
-
-            <!--Edit Content Item popup dialog-->
-            <div id="editContentItemForm" style="background-color: rgb(60, 95, 150); display: none; color: white;">
-                <label style="display: block">title</label>
-                <input id="contentItemTitleInput" style="display: block" type="text" />
-
-                <br />
-                <label style="display: block">description</label>
-                <textarea id="contentItemDescriptionInput" style="display: block"></textarea>
-
-                <br />
-                <label style="display: block">media source</label>
-                <input type="url" id="contentItemMediaSourceInput" style="display: block" />
-
-                <br />
-                <p style="display: block">
-                    <label style="display: block">media type</label>
-                    <select id="contentItemMediaTypeInput" style="display: block">
-                        <option value="pdf">PDF</option>
-                        <option value="image">Image</option>
-                        <option value="video">Video</option>
-                        <option value="audio">Audio</option>
-                    </select>
-                </p>
-
-                <p>
-                    <label>Attribution</label>
-                    <input type='text' id='cz-authoring-ci-attribution' style='display: block;' />
-                </p>
-
-                <p>
-                    <label>Media Source</label>
-                    <input type='text' id='cz-authoring-ci-media-source' style='display: block;' />
-                </p>
-            </div>
-
-
-            <div id="editProfileForm" style="background-color: rgb(60, 95, 150); display: none; color: white;">
-                <p>
-                    <label for="username" style="display: block">Username</label>
-                    <input type="text" name="username" id="profile_username" />
-                </p>
-                <p>
-                    <label for="username" style="display: block">e-mail</label>
-                    <input type="text" name="email" id="profile_email" />
-                </p>
-                <p>
-                    <label for="username" style="display: block">Display Name</label>
-                    <input type="text" name="display_name" id="profile_display_name" /><br />
-                </p>
-                <p>
-                    <label for="username">by providing my email I understand that Chronozoom may contact me about my account</label>
-                    <input type="checkbox" name="agreement" id="profile_agreement" /><br />
-                </p>
-            </div>
-
-            <div id="loginForm" style="background-color: rgb(60, 95, 150); display: none; color: white;">
-
-            </div>
-        </div>
         <div id="tour_control" class="tour_control fleft">
             <img id="tour_prev" src="/Images/tour_prev_off.jpg" alt="previous" />
             <img style="margin: 0 0 0 16px"
@@ -314,12 +204,14 @@
             </div>
         </div>
 
-        <!--Create Event Form-->
         <div id="auth-event-form" class="cz-form unselectable"></div>
 
-        <div id="profile-form" class="cz-form unselectable"></div>
 
-        <div id="login-form" class="cz-form unselectable"></div>
+        <div id="profile-form" class="cz-form unselectable"></div>
+        <div id="login-form" class="cz-form unselectable"></div>        <div id="header-edit-form" class="cz-form cz-header-edit-form unselectable"></div>
+        <div id="auth-edit-timeline-form" class="cz-form cz-form-timeline unselectable"></div>
+        <div id="auth-edit-exhibit-form" class="cz-form cz-form-exhibit unselectable"></div>
+        <div id="auth-edit-contentitem-form" class="cz-form cz-form-contentitem unselectable"></div>
 
     </div>
 
@@ -363,12 +255,13 @@
         </div>
         <div class="breadcrumbs-container fleft">
             <table id="breadcrumbs-table">
-                <tr />
+                <tr></tr>
             </table>
         </div>
         <div class="breadcrumbs-nav fleft">
             <div id="breadcrumbs-nav-right" class="">&#187;</div>
         </div>
+
         <div class="fright">
             <ul>
                 <li class="fright">
@@ -385,7 +278,7 @@
                 </li>
             </ul>
         </div>
-        <div class="clearer" />
+        <div class="clearer"></div>
     </div>
 </body>
 </html>

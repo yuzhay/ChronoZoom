@@ -7,15 +7,22 @@
 /// <reference path='virtualCanvas.ts'/>
 /// <reference path='uiloader.ts'/>
 /// <reference path='controls/formbase.ts'/>
-/// <reference path='typings/jquery/jquery.d.ts'/>
+/// <reference path='../ui/auth-edit-timeline.ts'/>
+/// <reference path='../ui/auth-edit-exhibit.ts'/>
+/// <reference path='../ui/auth-edit-contentitem-form.ts'/>
+/// <reference path='../ui/header-edit.ts' />/// <reference path='typings/jquery/jquery.d.ts'/>
 /// <reference path='../ui/profile-edit.ts'/>
 /// <reference path='../ui/login-form.ts'/>
 
 module CZ {
-    module HomePageViewModel {
+    export module HomePageViewModel {
         // Contains mapping: CSS selector -> html file.
         var _uiMap = {
-            "#auth-event-form": "/ui/auth-event-form.html",
+            "#header-edit-form": "/ui/header-edit-form.html",
+            "#auth-edit-timeline-form": "/ui/auth-edit-timeline-form.html",
+            "#auth-edit-exhibit-form": "/ui/auth-edit-exhibit-form.html",
+            "#auth-edit-contentitem-form": "/ui/auth-edit-contentitem-form.html",
+            "$('<div></div>')": "/ui/contentitem-listbox.html",
             "#profile-form": "/ui/profile-form.html",
             "#login-form": "/ui/login-form.html"
         };
@@ -52,7 +59,7 @@ module CZ {
             {
                 Name: "Authoring",
                 Activation: FeatureActivation.NotRootCollection,
-                JQueryReference: ".footer-authoring-link"
+                JQueryReference: ".header-icon.edit-icon"
             },
             {
                 Name: "WelcomeScreen",
@@ -79,17 +86,121 @@ module CZ {
             })();
 
             $('.bubbleInfo').hide();
-            //var profileForm;
+
             CZ.Common.initialize();
             CZ.UILoader.loadAll(_uiMap).done(function () {
-                // TODO: Get UI components.
                 var forms = arguments;
-                var profileForm = new CZ.UI.FormEditProfile(forms[1], {
+
+                $(".header-icon.edit-icon").click(function () {
+                    $(".header-icon.active").removeClass("active");
+                    $(this).addClass("active");
+
+                    var form = new CZ.UI.FormHeaderEdit(forms[0], {
+                        activationSource: $(this),
+                        navButton: ".cz-form-nav",
+                        closeButton: ".cz-form-close-btn > .cz-form-btn",
+                        titleTextblock: ".cz-form-title",
+                        createTimeline: ".cz-form-create-timeline",
+                        createExhibit: ".cz-form-create-exhibit"
+                    });
+                    form.show();
+                });
+
+                CZ.Authoring.initialize(CZ.Common.vc, {
+                    showCreateTimelineForm: function (timeline) {
+                        var form = new CZ.UI.FormEditTimeline(forms[1], {
+                            activationSource: $(".header-icon.edit-icon"),
+                            navButton: ".cz-form-nav",
+                            closeButton: ".cz-form-close-btn > .cz-form-btn",
+                            titleTextblock: ".cz-form-title",
+                            startDate: ".cz-form-time-start",
+                            endDate: ".cz-form-time-end",
+                            saveButton: ".cz-form-save",
+                            deleteButton: ".cz-form-delete",
+                            titleInput: ".cz-form-item-title",
+                            context: timeline
+                        });
+                        form.show();
+                    },
+                    showEditTimelineForm: function (timeline) {
+                        var form = new CZ.UI.FormEditTimeline(forms[1], {
+                            activationSource: $(".header-icon.edit-icon"),
+                            navButton: ".cz-form-nav",
+                            closeButton: ".cz-form-close-btn > .cz-form-btn",
+                            titleTextblock: ".cz-form-title",
+                            startDate: ".cz-form-time-start",
+                            endDate: ".cz-form-time-end",
+                            saveButton: ".cz-form-save",
+                            deleteButton: ".cz-form-delete",
+                            titleInput: ".cz-form-item-title",
+                            context: timeline
+                        });
+                        form.show();
+                    },
+                    showCreateExhibitForm: function (exhibit) {
+                        var form = new CZ.UI.FormEditExhibit(forms[2], {
+                            activationSource: $(".header-icon.edit-icon"),
+                            navButton: ".cz-form-nav",
+                            closeButton: ".cz-form-close-btn > .cz-form-btn",
+                            titleTextblock: ".cz-form-title",
+                            titleInput: ".cz-form-item-title",
+                            datePicker: ".cz-form-time",
+                            createArtifactButton: ".cz-form-create-artifact",
+                            contentItemsListBox: ".cz-listbox",
+                            saveButton: ".cz-form-save",
+                            deleteButton: ".cz-form-delete",
+                            contentItemsTemplate: forms[4],
+                            context: exhibit
+                        });
+                        form.show();
+                    },
+                    showEditExhibitForm: function (exhibit) {
+                        var form = new CZ.UI.FormEditExhibit(forms[2], {
+                            activationSource: $(".header-icon.edit-icon"),
+                            navButton: ".cz-form-nav",
+                            closeButton: ".cz-form-close-btn > .cz-form-btn",
+                            titleTextblock: ".cz-form-title",
+                            titleInput: ".cz-form-item-title",
+                            datePicker: ".cz-form-time",
+                            createArtifactButton: ".cz-form-create-artifact",
+                            contentItemsListBox: ".cz-listbox",
+                            saveButton: ".cz-form-save",
+                            deleteButton: ".cz-form-delete",
+                            contentItemsTemplate: forms[4],
+                            context: exhibit
+                        });
+                        form.show();
+                    },
+                    showEditContentItemForm: function (ci, e, prevForm, noAnimation) {
+                        var form = new CZ.UI.FormEditCI(forms[3], {
+                            activationSource: $(".header-icon.edit-icon"),
+                            prevForm: prevForm,
+                            navButton: ".cz-form-nav",
+                            closeButton: ".cz-form-close-btn > .cz-form-btn",
+                            titleTextblock: ".cz-form-title",
+                            saveButton: ".cz-form-save",
+                            titleInput: ".cz-form-item-title",
+                            mediaSourceInput: ".cz-form-item-mediasource",
+                            mediaInput: ".cz-form-item-mediaurl",
+                            descriptionInput: ".cz-form-item-descr",
+                            attributionInput: ".cz-form-item-attribution",
+                            mediaTypeInput: ".cz-form-item-media-type",
+                            context: {
+                                exhibit: e,
+                                contentItem: ci
+                            }
+                        });
+                        form.show(noAnimation);
+                    }
+                });
+
+                var profileForm = new CZ.UI.FormEditProfile(forms[5], {
                     activationSource: $("#showButton"),
                     navButton: ".cz-form-nav",
                     closeButton: ".cz-form-close-btn > .cz-form-btn",
                     titleTextblock: ".cz-form-title",
                     saveButton: "#cz-form-save",
+                    logoutButton:"#cz-form-logout",
                     titleInput: ".cz-form-item-title",
                     usernameInput: ".cz-form-username",
                     emailInput: ".cz-form-email",
@@ -102,33 +213,23 @@ module CZ {
                 });
 
                 CZ.Service.getProfile().done(data => {
-
                     //Not authorized
                     if (data == "") {
-                        //alert("1: " + data);
-                        $("#login-panel").show();                       
+                        $("#login-panel").show();
                     }
-                    //Authorized for a first time
+                        //Authorized for a first time
                     else if (data != "" && data.DisplayName == null) {
                         //alert("2: "+data + " " + data.DisplayName);
                         $("#profile-panel").show();
+                        $("#profile-panel input#username").focus();
                         profileForm.show();
                     } else {
                         $("#profile-panel").show();
                         $("#profile-panel span.auth-panel-login").html(data.DisplayName);
                     }
-                });
+                }).fail((error) => { $("#login-panel").show(); });
 
-                //Login/Logout button
-                //$.ajax({
-                //    url: "/account/isauth"
-                //}).done(function (data) {
-                //    if (data == "True") {
-                //        profileForm.show();
-                //    } 
-                //});
-
-                var form_login = new CZ.UI.FormLogin(forms[2], {
+                var form_login = new CZ.UI.FormLogin(forms[6], {
                     activationSource: $("#showButton"),
                     navButton: ".cz-form-nav",
                     closeButton: ".cz-form-close-btn > .cz-form-btn",
@@ -163,14 +264,10 @@ module CZ {
             });
 
             $('#search_button')
-                .mouseup(CZ.Search.onSearchClicked)
-                .mouseover(() => { CZ.Search.searchHighlight(true); })
-                .mouseout(() => { CZ.Search.searchHighlight(false); });
+
 
             $('#tours_index')
-                .mouseup(CZ.Tours.onTourClicked)
-                .mouseover(() => { CZ.Tours.tourButtonHighlight(true); })
-                .mouseout(() => { CZ.Tours.tourButtonHighlight(false); });
+
 
             $('#human_rect')
                 .click(() => { CZ.Search.navigateToBookmark(CZ.Common.humanityVisible); });
@@ -277,6 +374,9 @@ module CZ {
                     $(feature.JQueryReference).css("display", "none");
                 }
             });
+
+            if (!rootCollection)
+                CZ.Authoring.isEnabled = true;
 
             if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
                 if (/Chrome[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
@@ -493,7 +593,12 @@ module CZ {
             });
 
             var vp = CZ.Common.vc.virtualCanvas("getViewport");
-            CZ.Common.vc.virtualCanvas("setVisible", CZ.VCContent.getVisibleForElement({ x: -13700000000, y: 0, width: 13700000000, height: 5535444444.444445 }, 1.0, vp, false), true);
+            CZ.Common.vc.virtualCanvas("setVisible", CZ.VCContent.getVisibleForElement({
+                x: -13700000000,
+                y: 0,
+                width: 13700000000,
+                height: 5535444444.444445
+            }, 1.0, vp, false), true);
             CZ.Common.updateAxis(CZ.Common.vc, CZ.Common.ax);
 
             var bid = window.location.hash.match("b=([a-z0-9_]+)");
