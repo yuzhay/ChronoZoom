@@ -64,7 +64,7 @@ var CZ;
             CZ.Common.initialize();
             CZ.UILoader.loadAll(_uiMap).done(function () {
                 var forms = arguments;
-                var form = new CZ.UI.FormEditProfile(forms[1], {
+                var profileForm = new CZ.UI.FormEditProfile(forms[1], {
                     activationSource: $("#showButton"),
                     navButton: ".cz-form-nav",
                     closeButton: ".cz-form-close-btn > .cz-form-btn",
@@ -77,7 +77,18 @@ var CZ;
                     context: ""
                 });
                 $("#edit_profile_button").click(function () {
-                    form.show();
+                    profileForm.show();
+                });
+                CZ.Service.getProfile().done(function (data) {
+                    if(data == "") {
+                        $("#login-panel").show();
+                    } else if(data != "" && data.DisplayName == null) {
+                        $("#profile-panel").show();
+                        profileForm.show();
+                    } else {
+                        $("#profile-panel").show();
+                        $("#profile-panel span.auth-panel-login").html(data.DisplayName);
+                    }
                 });
                 var form_login = new CZ.UI.FormLogin(forms[2], {
                     activationSource: $("#showButton"),
@@ -173,16 +184,6 @@ var CZ;
                 CZ.Common.toggleOffImage('biblCloseButton', 'png');
             }).mouseover(function () {
                 CZ.Common.toggleOnImage('biblCloseButton', 'png');
-            });
-            $.ajax({
-                url: "/chronozoom.svc/user"
-            }).done(function (data) {
-                if(data == "") {
-                    $("#login-panel").show();
-                } else {
-                    $("#profile-panel").show();
-                    $("#profile-panel span.auth-panel-login").html(data.DisplayName);
-                }
             });
             var wlcmScrnCookie = CZ.Common.getCookie("welcomeScreenDisallowed");
             if(wlcmScrnCookie != null) {

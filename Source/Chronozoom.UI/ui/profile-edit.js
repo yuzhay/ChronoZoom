@@ -28,12 +28,14 @@ var CZ;
                 var _this = this;
                 var profile = CZ.Service.getProfile();
                 profile.done(function (data) {
-                    if(data != null) {
+                    if(data.DisplayName != null) {
                         _this.usernameInput.val(data.DisplayName);
-                        _this.usernameInput.prop('disabled', true);
+                        if(data.DisplayName != "") {
+                            _this.usernameInput.prop('disabled', true);
+                            _this.agreeInput.attr('checked', true);
+                            _this.agreeInput.prop('disabled', true);
+                        }
                         _this.emailInput.val(data.Email);
-                        _this.agreeInput.attr('checked', true);
-                        _this.agreeInput.prop('disabled', true);
                     }
                 });
                 this.saveButton.click(function (event) {

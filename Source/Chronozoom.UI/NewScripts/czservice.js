@@ -276,30 +276,36 @@ var CZ;
             return $.when.apply($, promises);
         }
         Service.putExhibitContent = putExhibitContent;
-        function putProfile(username, email) {
+        function putProfile(displayName, email) {
             var request = new Service.Request(_serviceUrl);
-            request.addToPath("profile");
-            alert(username);
+            request.addToPath("user");
+            var user = {
+                "Id": "00000000-0000-0000-0000-000000000000",
+                "DisplayName": displayName,
+                "Email": email
+            };
             return $.ajax({
                 type: "PUT",
                 cache: false,
                 dataType: "json",
                 url: request.url,
-                data: JSON.stringify({
-                })
+                data: JSON.stringify(user)
             });
         }
         Service.putProfile = putProfile;
-        function deleteProfile(username) {
+        function deleteProfile(displayName) {
             var request = new Service.Request(_serviceUrl);
-            request.addToPath("profile");
+            request.addToPath("user");
+            var user = {
+                "Id": "00000000-0000-0000-0000-000000000000",
+                "DisplayName": displayName
+            };
             return $.ajax({
                 type: "DELETE",
                 cache: false,
                 dataType: "json",
                 url: request.url,
-                data: JSON.stringify({
-                })
+                data: JSON.stringify(user)
             });
         }
         Service.deleteProfile = deleteProfile;
