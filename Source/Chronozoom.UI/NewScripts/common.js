@@ -37,9 +37,7 @@ var CZ;
                 showEditTimelineForm: CZ.Authoring.UI.showEditTimelineForm,
                 showCreateExhibitForm: CZ.Authoring.UI.showCreateExhibitForm,
                 showEditExhibitForm: CZ.Authoring.UI.showEditExhibitForm,
-                showEditContentItemForm: CZ.Authoring.UI.showEditContentItemForm,
-                showEditProfileForm: CZ.Authoring.UI.showEditProfileForm,
-                showLoginForm: CZ.Authoring.UI.showLoginForm
+                showEditContentItemForm: CZ.Authoring.UI.showEditContentItemForm
             });
         }
         Common.initialize = initialize;

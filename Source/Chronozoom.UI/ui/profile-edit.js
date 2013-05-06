@@ -15,10 +15,13 @@ var CZ;
                 this.usernameInput = container.find(formInfo.usernameInput);
                 this.emailInput = container.find(formInfo.emailInput);
                 this.agreeInput = container.find(formInfo.agreeInput);
+                this.loginPanel = $(document.body).find(formInfo.loginPanel);
+                this.profilePanel = $(document.body).find(formInfo.profilePanel);
+                this.loginPanelLogin = $(document.body).find(formInfo.loginPanelLogin);
                 this.initialize();
             }
             FormEditProfile.prototype.validEmail = function (e) {
-                var filter = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,4}$/;
+                var filter = /^\w+@[a-zA-Z_\.]+?\.[a-zA-Z]{2,4}$/;
                 return String(e).search(filter) != -1;
             };
             FormEditProfile.prototype.validUsername = function (e) {
@@ -56,6 +59,10 @@ var CZ;
                         return;
                     }
                     CZ.Service.putProfile(_this.usernameInput.val(), _this.emailInput.val()).then(function (success) {
+                        _this.usernameInput.prop('disabled', true);
+                        CZ.Service.getProfile().done(function (data) {
+                            _this.loginPanelLogin.html(data.DisplayName);
+                        });
                         _super.prototype.close.call(_this);
                     }, function (error) {
                         alert("Unable to save changes. Please try again later.");
@@ -66,23 +73,21 @@ var CZ;
                     return $.ajax({
                         url: "/account/logout"
                     }).done(function (data) {
-                        $("#profile-panel").hide();
-                        $("#login-panel").show();
+                        _this.profilePanel.hide();
+                        _this.loginPanel.show();
                         _super.prototype.close.call(_this);
                     });
                 });
             };
             FormEditProfile.prototype.show = function () {
                 _super.prototype.show.call(this);
-                this.activationSource.addClass("activeButton");
+                this.activationSource.addClass("active");
             };
             FormEditProfile.prototype.close = function () {
-                if(this.isCancel && CZ.Authoring.mode === "profile") {
-                }
                 this.container.hide("slow", function (event) {
                 });
                 CZ.Authoring.isActive = false;
-                this.activationSource.removeClass("activeButton");
+                this.activationSource.removeClass("active");
             };
             return FormEditProfile;
         })(CZ.UI.FormBase);

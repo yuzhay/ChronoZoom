@@ -1,4 +1,4 @@
-/// <reference path='cz.settings.ts'/>
+﻿/// <reference path='cz.settings.ts'/>
 /// <reference path='common.ts'/>
 /// <reference path='timescale.ts'/>
 /// <reference path='viewportcontroller.ts'/>
@@ -10,7 +10,8 @@
 /// <reference path='../ui/auth-edit-timeline.ts'/>
 /// <reference path='../ui/auth-edit-exhibit.ts'/>
 /// <reference path='../ui/auth-edit-contentitem-form.ts'/>
-/// <reference path='../ui/header-edit.ts' />/// <reference path='typings/jquery/jquery.d.ts'/>
+/// <reference path='../ui/header-edit.ts' />
+/// <reference path='typings/jquery/jquery.d.ts'/>
 /// <reference path='../ui/profile-edit.ts'/>
 /// <reference path='../ui/login-form.ts'/>
 
@@ -200,11 +201,14 @@ module CZ {
                     closeButton: ".cz-form-close-btn > .cz-form-btn",
                     titleTextblock: ".cz-form-title",
                     saveButton: "#cz-form-save",
-                    logoutButton:"#cz-form-logout",
+                    logoutButton: "#cz-form-logout",
                     titleInput: ".cz-form-item-title",
                     usernameInput: ".cz-form-username",
                     emailInput: ".cz-form-email",
                     agreeInput: ".cz-form-agree",
+                    loginPanel: "#login-panel",
+                    profilePanel: "#profile-panel",
+                    loginPanelLogin: "#profile-panel span.auth-panel-login",
                     context: ""
                 });
 
@@ -219,7 +223,6 @@ module CZ {
                     }
                         //Authorized for a first time
                     else if (data != "" && data.DisplayName == null) {
-                        //alert("2: "+data + " " + data.DisplayName);
                         $("#profile-panel").show();
                         $("#profile-panel input#username").focus();
                         profileForm.show();
@@ -229,7 +232,7 @@ module CZ {
                     }
                 }).fail((error) => { $("#login-panel").show(); });
 
-                var form_login = new CZ.UI.FormLogin(forms[6], {
+                var loginForm = new CZ.UI.FormLogin(forms[6], {
                     activationSource: $("#showButton"),
                     navButton: ".cz-form-nav",
                     closeButton: ".cz-form-close-btn > .cz-form-btn",
@@ -238,8 +241,8 @@ module CZ {
                     context: ""
                 });
 
-                $("#login_button").click(function () {
-                    form_login.show();
+                $("#login-button").click(function () {
+                    loginForm.show();
                 });
 
 
@@ -264,10 +267,9 @@ module CZ {
             });
 
             $('#search_button')
-
-
+                .mouseup(CZ.Search.onSearchClicked)
             $('#tours_index')
-
+                .mouseup(CZ.Tours.onTourClicked)
 
             $('#human_rect')
                 .click(() => { CZ.Search.navigateToBookmark(CZ.Common.humanityVisible); });
@@ -322,21 +324,6 @@ module CZ {
             $('#biblCloseButton')
                 .mouseout(() => { CZ.Common.toggleOffImage('biblCloseButton', 'png'); })
                 .mouseover(() => { CZ.Common.toggleOnImage('biblCloseButton', 'png'); })
-
-
-
-            //Login/Logout button
-            //$.ajax({
-            //    url: "/chronozoom.svc/user"
-            //}).done(function (data) {
-            //    if (data == "") {
-            //        $("#login-panel").show();
-            //    } else {
-            //        $("#profile-panel").show();
-            //        $("#profile-panel span.auth-panel-login").html(data.DisplayName);
-            //    }
-            //});
-
 
 
             var wlcmScrnCookie = CZ.Common.getCookie("welcomeScreenDisallowed");

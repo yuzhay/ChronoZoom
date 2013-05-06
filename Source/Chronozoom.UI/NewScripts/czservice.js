@@ -312,8 +312,6 @@ var CZ;
             request.addToPath("profile");
             return $.ajax({
                 url: "/chronozoom.svc/user"
-            }).done(function (data) {
-                return data;
             });
         }
         Service.getProfile = getProfile;

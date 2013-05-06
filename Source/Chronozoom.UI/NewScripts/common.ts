@@ -21,7 +21,6 @@ module CZ {
         export var maxPermitedScale;
         export var maxPermitedVerticalRange;
 
-
         export var controller; //a controller to perform smooth navigation
         export var isAxisFreezed = true; //indicates whether the axis moves together with canvas during navigation or not
         export var startHash;
@@ -71,11 +70,12 @@ module CZ {
                 showCreateExhibitForm: CZ.Authoring.UI.showCreateExhibitForm,
                 showEditExhibitForm: CZ.Authoring.UI.showEditExhibitForm,
                 showEditContentItemForm: CZ.Authoring.UI.showEditContentItemForm,
-                showEditProfileForm: CZ.Authoring.UI.showEditProfileForm,
-                showLoginForm: CZ.Authoring.UI.showLoginForm
-            });        }
-        
-        
+                //showEditProfileForm: CZ.Authoring.UI.showEditProfileForm,
+                //showLoginForm: CZ.Authoring.UI.showLoginForm
+            });
+        }
+
+
         /* Calculates local offset of mouse cursor in specified jQuery element.
         @param jqelement  (JQuery to Dom element) jQuery element to get local offset for.
         @param event   (Mouse event args) mouse event args describing mouse cursor.

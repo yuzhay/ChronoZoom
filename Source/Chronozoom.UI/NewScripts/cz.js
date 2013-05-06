@@ -178,6 +178,9 @@ var CZ;
                     usernameInput: ".cz-form-username",
                     emailInput: ".cz-form-email",
                     agreeInput: ".cz-form-agree",
+                    loginPanel: "#login-panel",
+                    profilePanel: "#profile-panel",
+                    loginPanelLogin: "#profile-panel span.auth-panel-login",
                     context: ""
                 });
                 $("#edit_profile_button").click(function () {
@@ -197,7 +200,7 @@ var CZ;
                 }).fail(function (error) {
                     $("#login-panel").show();
                 });
-                var form_login = new CZ.UI.FormLogin(forms[6], {
+                var loginForm = new CZ.UI.FormLogin(forms[6], {
                     activationSource: $("#showButton"),
                     navButton: ".cz-form-nav",
                     closeButton: ".cz-form-close-btn > .cz-form-btn",
@@ -205,8 +208,8 @@ var CZ;
                     titleInput: ".cz-form-item-title",
                     context: ""
                 });
-                $("#login_button").click(function () {
-                    form_login.show();
+                $("#login-button").click(function () {
+                    loginForm.show();
                 });
             });
             var url = CZ.UrlNav.getURL();
@@ -223,8 +226,8 @@ var CZ;
                     $(event.target).parent().css("background-color", "");
                 }
             });
-            $('#search_button');
-            $('#tours_index');
+            $('#search_button').mouseup(CZ.Search.onSearchClicked);
+            $('#tours_index').mouseup(CZ.Tours.onTourClicked);
             $('#human_rect').click(function () {
                 CZ.Search.navigateToBookmark(CZ.Common.humanityVisible);
             });

@@ -58,17 +58,18 @@
     <script type="text/javascript" src="/NewScripts/controls/formbase.js"></script>
     <script type="text/javascript" src="/NewScripts/cz.dates.js"></script>
 
-
-    <script type="text/javascript" src="/NewScripts/external/ACS.js"></script>    <script type="text/javascript" src="/ui/contentitem-listbox.js"></script>
+    <script type="text/javascript" src="/NewScripts/external/ACS.js"></script>
+    <script type="text/javascript" src="/ui/contentitem-listbox.js"></script>
     <script type="text/javascript" src="/ui/auth-edit-timeline.js"></script>
     <script type="text/javascript" src="/ui/auth-edit-exhibit.js"></script>
     <script type="text/javascript" src="/ui/auth-edit-contentitem-form.js"></script>
-    <script type="text/javascript" src="/ui/header-edit.js"></script>    <!--[if IE]>
+    <script type="text/javascript" src="/ui/header-edit.js"></script>
+
+    <!--[if IE]>
     <script type="text/javascript" src="/NewScripts/regimesIE.js"></script>
     <![endif]-->
 
     <script type="text/javascript" src="/NewScripts/cz.js"></script>
-
     <script type="text/javascript" src="/ui/profile-edit.js"></script>
     <script type="text/javascript" src="/ui/login-form.js"></script>
     <title>ChronoZoom</title>
@@ -100,26 +101,30 @@
         <div class="fright">
             <ul>
                 <li class="fleft">
-                    <div id="tours_index" class="header-icon tour-icon" title="Take a guided tour" data-enabled="true"></div>                </li>
+                    <div id="tours_index" class="header-icon tour-icon" title="Take a guided tour" data-enabled="true"></div>
+                </li>
                 <li class="fleft">
-                    <div id="search_button" class="header-icon search-icon" title="Search ChronoZoom" data-enabled="true"></div>                </li>
+                    <div id="search_button" class="header-icon search-icon" title="Search ChronoZoom" data-enabled="true"></div>
+                </li>
                 <li class="fleft">
-                    <div class="header-icon view-icon" title="View Collections" data-enabled="false"></div>                </li>
+                    <div class="header-icon view-icon" title="View Collections" data-enabled="false"></div>
+                </li>
                 <li class="fleft">
                     <div class="header-icon edit-icon" title="Create your events" data-enabled="true"></div>
                 </li>
                 <li class="fleft">
-                    <div style="display:none" id="login-panel">
-                        <span class="auth-panel-login">sign in</span>
-                        <img src="/Images/profile.png" id="login_button"/> 
+                    <div style="display: none" id="login-panel">
+                        <span class="auth-panel-login">Sign in</span>
+                        <img src="/Images/profile.png" id="login-button" />
                     </div>
-                 </li>
-                <li class="fleft" >
-                   <div style="display:none" id="profile-panel">
+                </li>
+                <li class="fleft">
+                    <div style="display: none" id="profile-panel">
                         <span class="auth-panel-login"></span>
-                        <img src="/Images/profile.png" id="edit_profile_button"/> 
+                        <img src="/Images/profile.png" id="edit_profile_button" />
                     </div>
-                </li>            </ul>
+                </li>
+            </ul>
         </div>
 
         <div id="tour_control" class="tour_control fleft">
@@ -204,11 +209,9 @@
             </div>
         </div>
 
-        <div id="auth-event-form" class="cz-form unselectable"></div>
-
-
         <div id="profile-form" class="cz-form unselectable"></div>
-        <div id="login-form" class="cz-form unselectable"></div>        <div id="header-edit-form" class="cz-form cz-header-edit-form unselectable"></div>
+        <div id="login-form" class="cz-form unselectable"></div>
+        <div id="header-edit-form" class="cz-form cz-header-edit-form unselectable"></div>
         <div id="auth-edit-timeline-form" class="cz-form cz-form-timeline unselectable"></div>
         <div id="auth-edit-exhibit-form" class="cz-form cz-form-exhibit unselectable"></div>
         <div id="auth-edit-contentitem-form" class="cz-form cz-form-contentitem unselectable"></div>

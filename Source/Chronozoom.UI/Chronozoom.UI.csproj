@@ -158,8 +158,8 @@
     <Content Include="Images\view-icon.png" />
     <Content Include="Images\edit.svg" />
     <Content Include="NewScripts\authoring.ts" />
-    <Content Include="NewScripts\authoring.ui.min.js">
-      <DependentUpon>authoring.ui.ts</DependentUpon>
+    <Content Include="NewScripts\common.min.js">
+      <DependentUpon>common.ts</DependentUpon>
     </Content>
     <Content Include="NewScripts\cz.min.js">
       <DependentUpon>cz.ts</DependentUpon>
@@ -225,9 +225,6 @@
       <DependentUpon>uiloader.ts</DependentUpon>
     </Content>
     <Content Include="NewScripts\uiloader.ts" />
-    <Content Include="NewScripts\urlnav.min.js">
-      <DependentUpon>urlnav.ts</DependentUpon>
-    </Content>
     <Content Include="NewScripts\urlnav.ts" />
     <Content Include="NewScripts\vccontent.ts" />
     <Content Include="NewScripts\viewport.ts" />
@@ -280,26 +277,17 @@
       <DependentUpon>header-edit.ts</DependentUpon>
     </Content>
     <Content Include="ui\login-form.html" />
-    <Content Include="ui\login-form.js">
-      <DependentUpon>login-form.ts</DependentUpon>
-    </Content>
-    <Content Include="ui\login-form.min.js">
-      <DependentUpon>login-form.ts</DependentUpon>
-    </Content>
     <Content Include="ui\login-form.ts" />
     <Content Include="ui\logout-form.html" />
     <Content Include="ui\logout-form.js">
       <DependentUpon>logout-form.ts</DependentUpon>
     </Content>
-    <Content Include="ui\logout-form.min.js">
-      <DependentUpon>logout-form.ts</DependentUpon>
-    </Content>
     <Content Include="ui\logout-form.ts" />
-    <Content Include="ui\profile-form.html" />
-    <Content Include="ui\profile-edit.js">
+    <Content Include="ui\profile-edit.min.js">
       <DependentUpon>profile-edit.ts</DependentUpon>
     </Content>
-    <Content Include="ui\profile-edit.min.js">
+    <Content Include="ui\profile-form.html" />
+    <Content Include="ui\profile-edit.js">
       <DependentUpon>profile-edit.ts</DependentUpon>
     </Content>
     <Content Include="ui\profile-edit.ts" />

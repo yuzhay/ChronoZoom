@@ -12,6 +12,9 @@ module CZ {
             usernameInput: string;
             emailInput: string;
             agreeInput: string;
+            loginPanel: string;
+            profilePanel: string;
+            loginPanelLogin: string;
             context: Object;
         }
 
@@ -24,6 +27,9 @@ module CZ {
             private usernameInput: JQuery;
             private emailInput: JQuery;
             private agreeInput: JQuery;
+            private loginPanel: JQuery;
+            private profilePanel: JQuery;
+            private loginPanelLogin: JQuery;
             // We only need to add additional initialization in constructor.
             constructor(container: JQuery, formInfo: FormEditProfileInfo) {
                 super(container, formInfo);
@@ -33,11 +39,14 @@ module CZ {
                 this.usernameInput = container.find(formInfo.usernameInput);
                 this.emailInput = container.find(formInfo.emailInput);
                 this.agreeInput = container.find(formInfo.agreeInput);
+                this.loginPanel = $(document.body).find(formInfo.loginPanel);
+                this.profilePanel = $(document.body).find(formInfo.profilePanel);
+                this.loginPanelLogin = $(document.body).find(formInfo.loginPanelLogin);
                 this.initialize();
             }
 
             private validEmail(e) {
-                var filter = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,4}$/;
+                var filter = /^\w+@[a-zA-Z_\.]+?\.[a-zA-Z]{2,4}$/;
                 return String(e).search(filter) != -1;
             }
 
@@ -82,6 +91,11 @@ module CZ {
 
                     CZ.Service.putProfile(this.usernameInput.val(), this.emailInput.val()).then(
                         success => {
+                            this.usernameInput.prop('disabled', true);
+                            CZ.Service.getProfile().done(data => {
+                                this.loginPanelLogin.html(data.DisplayName);
+                            });
+
                             super.close();
                         },
                         function (error) {
@@ -95,12 +109,10 @@ module CZ {
                 {
                     return $.ajax({ url: "/account/logout" }).done(data =>
                     {
-                        $("#profile-panel").hide();
-                        $("#login-panel").show();
+                        this.profilePanel.hide();
+                        this.loginPanel.show();
                         super.close();
                     });
-
-                    
                 });
 
             }
@@ -108,25 +120,17 @@ module CZ {
             public show(): void {
                 super.show();
 
-                // Just an example how to highligh pressed "Show Form" button.
                 // Ideally, it would be better to not place UI selectors in form code,
                 // but pass them through parameters.
-                this.activationSource.addClass("activeButton");
+                this.activationSource.addClass("active");
             }
 
             public close() {
-                if (this.isCancel && CZ.Authoring.mode === "profile") {
-                    //CZ.Authoring.removeTimeline(this.timeline);
-                }
-
-                this.container.hide("slow", event => {
-                    //this.endDate.remove();
-                    //this.startDate.remove();
-                });
+                this.container.hide("slow", event => { });
 
                 CZ.Authoring.isActive = false;
 
-                this.activationSource.removeClass("activeButton");
+                this.activationSource.removeClass("active");
             }
         }
     }

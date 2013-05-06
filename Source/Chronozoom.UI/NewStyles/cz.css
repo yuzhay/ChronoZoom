@@ -60,7 +60,9 @@ a:visited {
 #header ul li img {
     margin-right: 5px;
     margin-left: 5px;
-}#header ul:after {
+}
+
+#header ul:after {
     clear: both;
 }
 
@@ -1275,13 +1277,16 @@ img.fallbackBackground {
     cursor: pointer;
     border: none;
     color: #fff;
-    height: 26px;}
+    height: 26px;
+}
 
 .cz-form-content {
     position: absolute;
     padding: 15px;    background-color: #fff;
     text-align: justify;
-}.cz-input {
+}
+
+.cz-input {
     margin: 5px 0;
     color: #232323;
     background-color: #E9E9E9;
@@ -1397,7 +1402,6 @@ img.fallbackBackground {
     color: #aeaeae;
     text-align: justify;
 }
-}
 
 /***********************************************************
 
@@ -1498,7 +1502,9 @@ img.fallbackBackground {
 * * { outline: 1px solid red; }
 * * { outline: 1px solid green; }
 * * { outline: 1px solid orange; }
-* * { outline: 1px solid blue; }*/#profile-form {
+* * { outline: 1px solid blue; }*/
+
+#profile-form {
     right:0px;
     width:304px;
     /*color:#b1b1b1;*/
@@ -1550,6 +1556,14 @@ img.fallbackBackground {
     color:#fff;
 }
 
+.profile-form-button{
+    width: 120px;
+    min-width: 120px;
+    height: 26px;
+    line-height: 0px;
+
+}
+
 .auth-panel-login{
     color:#E9E9E9;
     display:inline-block; 
@@ -1579,3 +1593,8 @@ img.fallbackBackground {
     width:134px;
 }
 
+.login-form-button{
+    width: 140px;
+    height: 26px;
+    line-height: 0px;
+}

@@ -46,7 +46,7 @@ module CZ {
 
         var _serviceUrl = CZ.Settings.serverUrlHost + "/chronozoom.svc/";
 
-        export function Request (urlBase) {
+        export function Request(urlBase) {
             var _url = urlBase;
             var _hasParameters = false;
 
@@ -80,7 +80,7 @@ module CZ {
             };
         };
 
-        
+
         // NOTE: Clear collections to let the server decide what to load.
         export var collectionName = "";
         export var superCollectionName = "";
@@ -90,7 +90,7 @@ module CZ {
         */
 
         // .../gettimelines?supercollection=&collection=&start=&end=&minspan=&lca=
-        export function getTimelines (r) {
+        export function getTimelines(r) {
             var request = new Request(_serviceUrl);
             request.addToPath("gettimelines");
             request.addParameter("supercollection", superCollectionName);
@@ -113,7 +113,7 @@ module CZ {
 
         // .../{supercollection}/collections
         // NOTE: Not implemented in current API.
-        export function getCollections () {
+        export function getCollections() {
             var request = new Request(_serviceUrl);
             request.addToPath(superCollectionName);
             request.addToPath("collections");
@@ -128,7 +128,7 @@ module CZ {
 
         // .../{supercollection}/{collection}/structure?start=&end=&minspan=&lca=
         // NOTE: Not implemented in current API.
-        export function getStructure (r) {
+        export function getStructure(r) {
             var request = new Request(_serviceUrl);
             request.addToPath(superCollectionName);
             request.addToPath(collectionName);
@@ -145,7 +145,7 @@ module CZ {
 
         // .../{supercollection}/{collection}/data
         // NOTE: Not implemented in current API.
-        export function postData (r) {
+        export function postData(r) {
             var request = new Request(_serviceUrl);
             request.addToPath(superCollectionName);
             request.addToPath(collectionName);
@@ -166,7 +166,7 @@ module CZ {
         */
 
         // .../{supercollection}/{collection}
-        export function putCollection (c) {
+        export function putCollection(c) {
             var request = new Request(_serviceUrl);
             request.addToPath(superCollectionName);
             request.addToPath(c.name);
@@ -182,7 +182,7 @@ module CZ {
         }
 
         // .../{supercollection}/{collection}
-        export function deleteCollection (c) {
+        export function deleteCollection(c) {
             var request = new Request(_serviceUrl);
             request.addToPath(superCollectionName);
             request.addToPath(c.name);
@@ -197,7 +197,7 @@ module CZ {
         }
 
         // .../{supercollection}/{collection}/timeline
-        export function putTimeline (t) {
+        export function putTimeline(t) {
             var request = new Request(_serviceUrl);
             request.addToPath(superCollectionName);
             request.addToPath(collectionName);
@@ -216,7 +216,7 @@ module CZ {
         }
 
         // .../{supercollection}/{collection}/timeline
-        export function deleteTimeline (t) {
+        export function deleteTimeline(t) {
             var request = new Request(_serviceUrl);
             request.addToPath(superCollectionName);
             request.addToPath(collectionName);
@@ -234,7 +234,7 @@ module CZ {
         }
 
         // .../{supercollection}/{collection}/exhibit
-        export function putExhibit (e) {
+        export function putExhibit(e) {
             var request = new Request(_serviceUrl);
             request.addToPath(superCollectionName);
             request.addToPath(collectionName);
@@ -253,7 +253,7 @@ module CZ {
         }
 
         // .../{supercollection}/{collection}/exhibit
-        export function deleteExhibit (e) {
+        export function deleteExhibit(e) {
             var request = new Request(_serviceUrl);
             request.addToPath(superCollectionName);
             request.addToPath(collectionName);
@@ -271,7 +271,7 @@ module CZ {
         }
 
         // .../{supercollection}/{collection}/contentitem
-        export function putContentItem (ci) {
+        export function putContentItem(ci) {
             var request = new Request(_serviceUrl);
             request.addToPath(superCollectionName);
             request.addToPath(collectionName);
@@ -290,7 +290,7 @@ module CZ {
         }
 
         // .../{supercollection}/{collection}/contentitem
-        export function deleteContentItem (ci) {
+        export function deleteContentItem(ci) {
             var request = new Request(_serviceUrl);
             request.addToPath(superCollectionName);
             request.addToPath(collectionName);
@@ -308,7 +308,7 @@ module CZ {
         }
 
         // .../{supercollection}/{collection}/tours
-        export function getTours () {
+        export function getTours() {
             var request = new Service.Request(_serviceUrl);
             request.addToPath(superCollectionName);
             request.addToPath(collectionName);
@@ -326,7 +326,7 @@ module CZ {
         * Auxiliary Methods.
         */
 
-        export function putExhibitContent (e, oldContentItems) {
+        export function putExhibitContent(e, oldContentItems) {
             var newGuids = e.contentItems.map(function (ci) {
                 return ci.guid;
             });
@@ -360,7 +360,10 @@ module CZ {
         export function putProfile(displayName, email) {
             var request = new Service.Request(_serviceUrl);
             request.addToPath("user");
-            var user = {"DisplayName": displayName, "Email": email };
+            var user = {
+                "DisplayName": displayName,
+                "Email": email
+            };
             return $.ajax({
                 type: "PUT",
                 cache: false,
@@ -377,7 +380,9 @@ module CZ {
         export function deleteProfile(displayName) {
             var request = new Service.Request(_serviceUrl);
             request.addToPath("user");
-            var user = {"DisplayName": displayName};
+            var user = {
+                "DisplayName": displayName
+            };
             return $.ajax({
                 type: "DELETE",
                 cache: false,
@@ -390,7 +395,9 @@ module CZ {
         export function getProfile() {
             var request = new Service.Request(_serviceUrl);
             request.addToPath("profile");
-            return $.ajax({ url: "/chronozoom.svc/user"}).done(function (data) {  return data; });
+            return $.ajax({
+                url: "/chronozoom.svc/user"
+            });
         }
     }
 }
