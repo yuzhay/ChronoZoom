@@ -1890,6 +1890,35 @@ module CZ {
                     }
                     else if (this.contentItem.mediaType.toLowerCase() === 'pdf') {
                         addPdf(container, layerid, mediaID, this.contentItem.uri, vx + leftOffset, mediaTop, contentWidth, mediaHeight, CZ.Settings.mediaContentElementZIndex);
+                        var hint = addText(container, layerid, id + "__source__", vx + leftOffset, sourceTop, sourceTop + sourceHeight / 2.0,
+                                                0.9 * sourceHeight, "See nothing?", {
+                                                    fontName: CZ.Settings.contentItemHeaderFontName,
+                                                    fillStyle: CZ.Settings.contentItemSourceFontColor,
+                                                    textBaseline: 'middle',
+                                                    textAlign: 'left',
+                                                    opacity: 1,
+                                                    adjustWidth: true
+                                                }, contentWidth);
+
+                        hint.reactsOnMouse = true;
+                        hint.onmouseclick = function (e) {
+                            vc.element.css('cursor', 'default');
+                            $("#bibliographyBack").show('clip', {}, 'slow');
+                            $("#bibliography .title").text("See nothing?");
+                            $("#bibliography .sources").html("<ul><li>Open 'Internet Options'->'Security'</li><li>Uncheck 'Enable Protected Mode (requires restarting Internet Explorer)'</li><li>Reload the page</li></ul>");
+                            return true;
+                        };
+                        hint.onmouseenter = function (pv, e) {
+                            this.settings.fillStyle = CZ.Settings.contentItemSourceHoveredFontColor;
+                            this.vc.requestInvalidate();
+                            this.vc.element.css('cursor', 'pointer');
+                        };
+                        hint.onmouseleave = function (pv, e) {
+                            this.settings.fillStyle = CZ.Settings.contentItemSourceFontColor;
+                            this.vc.requestInvalidate();
+                            this.vc.element.css('cursor', 'default');
+                        };
+
                     }
 
                     // Title
