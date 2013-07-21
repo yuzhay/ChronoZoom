@@ -484,7 +484,7 @@ var CZ;
                 var ci = contentItems[i];
                 isValid = isValid && CZ.Authoring.isNotEmpty(ci.title) && CZ.Authoring.isNotEmpty(ci.uri) && CZ.Authoring.isNotEmpty(ci.mediaType);
                 if(ci.mediaType.toLowerCase() === "image") {
-                    var imageReg = /\.(jpg|jpeg|png)$/i;
+                    var imageReg = /\.(jpg|jpeg|png|gif)$/i;
                     if(!imageReg.test(ci.uri)) {
                         alert("Sorry, only JPG/PNG images are supported");
                         isValid = false;
@@ -520,11 +520,15 @@ var CZ;
         }
         Authoring.validateContentItems = validateContentItems;
         function showSessionForm() {
+            CZ.HomePageViewModel.sessionForm.show();
         }
         Authoring.showSessionForm = showSessionForm;
         function resetSessionTimer() {
             if(CZ.Authoring.timer != null) {
                 clearTimeout(CZ.Authoring.timer);
+                CZ.Authoring.timer = setTimeout(function () {
+                    showSessionForm();
+                }, (CZ.Settings.sessionTime - 60) * 1000);
             }
         }
         Authoring.resetSessionTimer = resetSessionTimer;
