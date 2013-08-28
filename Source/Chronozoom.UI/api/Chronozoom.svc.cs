@@ -154,7 +154,7 @@ namespace Chronozoom.UI
             return new Uri(ConfigurationManager.AppSettings["ThumbnailsPath"]);
         });
 
-                // The login URL to sign in with Microsoft account
+        // The login URL to sign in with Microsoft account
         private static Lazy<Uri> _signinUrlMicrosoft = new Lazy<Uri>(() =>
         {
             if (string.IsNullOrEmpty(ConfigurationManager.AppSettings["SignInUrlMicrosoft"]))
@@ -257,6 +257,7 @@ namespace Chronozoom.UI
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "minspan")]
         public Timeline GetTimelines(string superCollection, string collection, string start, string end, string minspan, string commonAncestor, string maxElements, string depth)
         {
+            AddProperty(DateTime.Now.Millisecond.ToString(), "asdsadasd");
             return ApiOperation(delegate(User user, Storage storage)
             {
                 Trace.TraceInformation("Get Timelines");
@@ -528,7 +529,7 @@ namespace Chronozoom.UI
             return GetUser("");
         }
 
-        
+
         /// <summary>
         /// Documentation under IChronozoomSVC
         /// </summary>
@@ -539,16 +540,16 @@ namespace Chronozoom.UI
             {
                 if (String.IsNullOrEmpty(name))
                 {
-                
-                        Trace.TraceInformation("Get User");
-                        if (user == null)
-                        {
-                            SetStatusCode(HttpStatusCode.Unauthorized, ErrorDescription.RequestBodyEmpty);
-                            return new User();
-                        }
-                        var u = storage.Users.Where(candidate => candidate.NameIdentifier == user.NameIdentifier).FirstOrDefault();
-                        if (u != null) return u;
-                        return user;
+
+                    Trace.TraceInformation("Get User");
+                    if (user == null)
+                    {
+                        SetStatusCode(HttpStatusCode.Unauthorized, ErrorDescription.RequestBodyEmpty);
+                        return new User();
+                    }
+                    var u = storage.Users.Where(candidate => candidate.NameIdentifier == user.NameIdentifier).FirstOrDefault();
+                    if (u != null) return u;
+                    return user;
                 }
                 else
                 {
@@ -632,7 +633,7 @@ namespace Chronozoom.UI
                 superCollection.Collections.Add(personalCollection);
 
                 // Add root timeline Cosmos to the personal collection
-                Timeline rootTimeline = new Timeline { Id = Guid.NewGuid(), Title = "Cosmos" , Regime = "Cosmos" };
+                Timeline rootTimeline = new Timeline { Id = Guid.NewGuid(), Title = "Cosmos", Regime = "Cosmos" };
                 rootTimeline.FromYear = -13700000000;
                 rootTimeline.ToYear = 9999;
                 rootTimeline.Collection = personalCollection;
@@ -799,7 +800,7 @@ namespace Chronozoom.UI
                 Trace.TraceInformation("Put Collection {0} from user {1} in superCollection {2}", collectionName, user, superCollectionName);
 
                 collection.Theme = collectionRequest.Theme;
-                
+
                 storage.SaveChanges();
                 return collection.Id;
             });
@@ -896,7 +897,7 @@ namespace Chronozoom.UI
                         newTimeline.SubtreeSize = 1;
                     }
                     storage.Timelines.Add(newTimeline);
-                        
+
                     returnValue = newTimelineGuid;
                 }
                 else
@@ -1031,7 +1032,7 @@ namespace Chronozoom.UI
                         parentTimeline.Exhibits = new System.Collections.ObjectModel.Collection<Exhibit>();
                     }
                     parentTimeline.Exhibits.Add(newExhibit);
-                        
+
                     storage.Exhibits.Add(newExhibit);
                     UpdateSubtreeSize(storage, parentTimeline, 1 + (newExhibit.ContentItems != null ? newExhibit.ContentItems.Count() : 0));
 
@@ -1248,7 +1249,7 @@ namespace Chronozoom.UI
                 Timeline parentTimeline = storage.GetExhibitParentTimeline(deleteExhibit.Id);
 
                 storage.Entry(deleteExhibit).Collection(_ => _.ContentItems).Load();
-                UpdateSubtreeSize(storage, parentTimeline, (deleteExhibit.ContentItems != null ? - deleteExhibit.ContentItems.Count() : 0) - 1);
+                UpdateSubtreeSize(storage, parentTimeline, (deleteExhibit.ContentItems != null ? -deleteExhibit.ContentItems.Count() : 0) - 1);
 
                 storage.DeleteExhibit(exhibitRequest.Id);
                 storage.SaveChanges();
@@ -1296,7 +1297,7 @@ namespace Chronozoom.UI
                     contentItemRequest.Id = UpdateContentItem(storage, collection.Id, contentItemRequest);
                     returnValue = contentItemRequest.Id;
                 }
-                
+
                 storage.SaveChanges();
                 _thumbnailGenerator.Value.CreateThumbnails(contentItemRequest);
 
@@ -1527,9 +1528,9 @@ namespace Chronozoom.UI
                 returnValue.Add(newBookmarkGuid);
                 sequenceId++;
             }
-            
+
         }
-        
+
         private static Guid UpdateBookmark(Storage storage, Tour updateTour, Bookmark bookmarkRequest)
         {
             Bookmark updateBookmark = storage.Bookmarks.Find(bookmarkRequest.Id);
@@ -1795,7 +1796,7 @@ namespace Chronozoom.UI
                 return value;
             });
         }
-        
+
         /// <summary>
         /// Documentation under IChronozoomSVC
         /// </summary>
@@ -2021,7 +2022,7 @@ namespace Chronozoom.UI
         private static Collection RetrieveCollection(Storage storage, Guid collectionId)
         {
             Collection collection = storage.Collections.Find(collectionId);
-            if (collection != null)   
+            if (collection != null)
                 storage.Entry(collection).Reference("User").Load();
             return collection;
         }
@@ -2045,5 +2046,91 @@ namespace Chronozoom.UI
 
             return true;
         }
+
+        #region Favorite Timelines
+
+        public static IEnumerable<Property> GetProperties(bool global = false)
+        {
+            return ApiOperation<IEnumerable<Property>>(delegate(User user, Storage storage)
+            {
+                if (global)
+                    return (IEnumerable<Property>)storage.Properties.Select(s => s.User == null).ToList();
+                return (IEnumerable<Property>)storage.Properties.Select(s => s.User == user).ToList();
+            });
+        }
+
+        public static bool AddProperty(string propertyName, string name)
+        {
+            return ApiOperation<bool>(delegate(User user, Storage storage)
+            {
+                var p = storage.Properties.Add(new Property()
+                {
+                    Id = new Guid(),
+                    MachineName = propertyName,
+                    User = user,
+                    Name = "a"
+                });
+                if (p != null)
+                    return true;
+                return false;
+            });
+        }
+
+        public static bool RemoveProperty(string propertyName)
+        {
+            return ApiOperation<bool>(delegate(User user, Storage storage)
+            {
+                var del = storage.Properties.Where(p => p.MachineName == propertyName && p.User == user).FirstOrDefault();
+                if (del != null)
+                {
+                    var p = storage.Properties.Remove(del);
+                    if (p != null)
+                        return true;
+                    return false;
+                }
+                else
+                {
+                    return false;
+                }
+            });
+        }
+
+        public static bool AddPropertyValue(string propertyName, string value)
+        {
+            return ApiOperation<bool>(delegate(User user, Storage storage)
+            {
+                var prop = storage.Properties.Where(p => p.MachineName == propertyName && p.User == user).FirstOrDefault();
+                var pv = storage.PropertyValues.Add(new PropertyValue() 
+                { 
+                    Property = prop,
+                    Value = value
+                });
+                if (pv != null)
+                    return true;
+                return false;
+            });
+        }
+
+        public static bool RemovePropertyValue(string propertyName, string value)
+        {
+            return ApiOperation<bool>(delegate(User user, Storage storage)
+            {
+                var prop = storage.Properties.Where(p => p.MachineName == propertyName && p.User == user).FirstOrDefault();
+                var rem = storage.PropertyValues.Where(pv=>pv.Value == value && pv.Property == prop).FirstOrDefault();
+                if (rem != null)
+                {
+                    var pv = storage.PropertyValues.Remove(rem);
+                    if (pv != null)
+                        return true;
+                    return false;
+                }
+                else
+                {
+                    return false;
+                }
+            });
+        }
+
+        #endregion
     }
 }

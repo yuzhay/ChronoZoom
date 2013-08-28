@@ -86,6 +86,9 @@ namespace Chronozoom.Entities
 
         public DbSet<SuperCollection> SuperCollections { get; set; }
 
+        public DbSet<Property> Properties { get; set; }
+        public DbSet<PropertyValue> PropertyValues { get; set; }
+
         public Collection<Timeline> TimelinesQuery(Guid collectionId, decimal startTime, decimal endTime, decimal span, Guid? commonAncestor, int maxElements, int depth)
         {
             Dictionary<Guid, Timeline> timelinesMap = new Dictionary<Guid, Timeline>();
